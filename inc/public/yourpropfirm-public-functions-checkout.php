@@ -55,7 +55,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
 
-    if ($checkout_form === 'woocommerce_form') {
+    if ($checkout_form == 'woocommerce_form') {
         ?>
         <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
             <?php
