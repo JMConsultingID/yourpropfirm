@@ -8,20 +8,11 @@
  * @package yourpropfirm
  */
 function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
-    $order = wc_get_order($order_id);
-    $items = $order->get_items();
-    $program_ids = array();
-
+    $items = wc_get_order($order_id)->get_items();
     foreach ($items as $item) {
         $product_id = $item->get_product_id();
         $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        if (!empty($program_id)) {
-            $program_ids[] = $program_id;
-        }
-    }
-
-    if (!empty($program_ids)) {
-        update_post_meta($order_id, 'yourpropfirm_program_id', implode(', ', $program_ids));
+        update_post_meta($order_id, 'yourpropfirm_program_id', $program_id);
     }
 }
 
