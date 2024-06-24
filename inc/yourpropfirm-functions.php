@@ -15,6 +15,7 @@ require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-products.php';
 
 // Include public functions
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions.php';
+require dirname(__FILE__) . '/public/yourpropfirm-public-functions-api.php';
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions-checkout.php';
 
 // Include helper functions
