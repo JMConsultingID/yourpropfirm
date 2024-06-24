@@ -17,10 +17,8 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         return;
     }
 
-    // Initialize options array with a default 'select' option
     $options = ['' => __('Select Meta Trader Version', 'yourpropfirm')]; // Default prompt option
 
-    // Determine options based on enable_mt_ctrader setting
     if ($enable_mt_ctrader === 'enable') {
         $options['CTrader'] = __('CTrader', 'yourpropfirm');
     } else {
@@ -104,9 +102,8 @@ function yourpropfirm_display_order_meta_in_admin_order($order) {
 }
 add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_in_admin_order', 10, 1);
 
+// Additional Settings fo Woocommerce
 add_filter('woocommerce_checkout_registration_enabled', '__return_false');
 add_filter('woocommerce_checkout_login_enabled', '__return_false');
 add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
 add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
-
-
