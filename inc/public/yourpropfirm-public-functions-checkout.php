@@ -8,16 +8,22 @@
  * @package yourpropfirm
  */
 // Hook to display program ID on the checkout page after billing address
-function yourpropfirm_display_program_id_on_checkout() {
-    foreach ( WC()->cart->get_cart() as $cart_item ) {
-        $product_id = $cart_item['product_id'];
-        $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        if ( ! empty( $program_id ) ) {
-            echo '<p><strong>' . __('YourPropFirm Program ID') . ':</strong> ' . esc_html($program_id) . '</p>';
+function yourpropfirm_show_program_id_at_checkout() {
+    if (is_checkout()) {
+        global $woocommerce;
+        $items = $woocommerce->cart->get_cart();
+        foreach ($items as $item => $values) {
+            $product_id = $values['product_id'];
+            $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
+            if (!empty($program_id)) {
+                echo '<div class="yourpropfirm-program-id">';
+                echo '<strong>' . __('YourPropFirm Program ID') . ':</strong> ' . esc_html($program_id);
+                echo '</div>';
+            }
         }
     }
 }
-add_action('woocommerce_review_order_after_billing_details', 'yourpropfirm_display_program_id_on_checkout');
+add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_show_program_id_at_checkout');
 
 function yourpropfirm_display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
