@@ -51,7 +51,7 @@ function yourpropfirm_add_program_id_column_to_admin_products($columns) {
 add_filter('manage_edit-product_columns', 'yourpropfirm_add_program_id_column_to_admin_products', 20);
 
 function yourpropfirm_display_program_id_in_admin_products($column, $post_id) {
-    if ('program_id' === $column) {
+    if ('yourpropfirm_program_id' === $column) {
         $program_id = get_post_meta($post_id, '_yourpropfirm_program_id', true);
         if ($program_id) {
             echo '<span id="yourpropfirm_program_id-' . $post_id . '">' . esc_html($program_id) . '</span>'; 
