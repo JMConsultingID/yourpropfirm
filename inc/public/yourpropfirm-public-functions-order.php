@@ -10,16 +10,18 @@
 function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
     $order = wc_get_order($order_id);
     $items = $order->get_items();
-    
-    foreach ($items as $item_id => $item) {
+    $program_ids = array();
+
+    foreach ($items as $item) {
         $product_id = $item->get_product_id();
         $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        
         if (!empty($program_id)) {
-            wc_update_order_item_meta($item_id, '_yourpropfirm_program_id', $program_id);
-        } else {
-            wc_update_order_item_meta($item_id, '_yourpropfirm_program_id', 'programId is not loaded');
+            $program_ids[] = $program_id;
         }
+    }
+
+    if (!empty($program_ids)) {
+        update_post_meta($order_id, '_yourpropfirm_program_id', implode(', ', $program_ids));
     }
 }
 
