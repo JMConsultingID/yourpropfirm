@@ -21,7 +21,7 @@ function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
     }
 
     if (!empty($program_ids)) {
-        update_post_meta($order_id, '_yourpropfirm_program_id', implode(', ', $program_ids));
+        update_post_meta($order_id, 'yourpropfirm_program_id', implode(', ', $program_ids));
     }
 }
 
@@ -39,19 +39,19 @@ function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
             $mt_version_value = 'CTrader';
         }
     }
-    update_post_meta($order_id, '_yourpropfirm_mt_version', $mt_version_value);
+    update_post_meta($order_id, 'yourpropfirm_mt_version', $mt_version_value);
 }
 
 function yourpropfirm_additional_post_meta_on_order_creation($order_id) {
     $ypf_connection_completed = 0;
-    update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
+    update_post_meta($order_id, 'yourpropfirm_connection_completed', $ypf_connection_completed);
 }
 
 function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
     $order_id = $order->get_id();
-    $yourpropfirm_programId = get_post_meta($order_id, '_yourpropfirm_program_id', true);
-    $yourpropfirm_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
-    $yourpropfirm_connection_completed = get_post_meta($order_id, '_yourpropfirm_connection_completed', true);
+    $yourpropfirm_programId = get_post_meta($order_id, 'yourpropfirm_program_id', true);
+    $yourpropfirm_meta_version = get_post_meta($order_id, 'yourpropfirm_mt_version', true);
+    $yourpropfirm_connection_completed = get_post_meta($order_id, 'yourpropfirm_connection_completed', true);
     echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
     
     echo '<p><strong>' . __('YourPropFirm programID') . ':</strong> ' . esc_html($yourpropfirm_programId) . '</p>';
