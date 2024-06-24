@@ -42,7 +42,7 @@
             var program_id = $('#yourpropfirm_program_id-' + post_id).text();
 
             // Set value untuk input field "_program_id" dalam form Quick Edit
-            $(':input[name="_program_id"]').val(program_id);
+            $(':input[name="_yourpropfirm_program_id"]').val(program_id);
         });
 
     });
