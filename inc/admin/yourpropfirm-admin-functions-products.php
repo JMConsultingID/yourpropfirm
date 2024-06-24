@@ -77,7 +77,7 @@ function yourpropfirm_save_quick_edit_data($product_id) {
 add_action('save_post_product', 'yourpropfirm_save_quick_edit_data');
 
 function yourpropfirm_add_program_id_quick_edit_field($column_name, $post_type) {
-    if ($column_name != 'program_id' || $post_type != 'product') return;
+    if ($column_name != 'yourpropfirm_program_id' || $post_type != 'product') return;
 
     // Output custom field
     echo '<fieldset class="inline-edit-col-left">
