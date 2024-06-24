@@ -29,3 +29,6 @@ if (!function_exists('is_plugin_active')) {
 }
 
 require plugin_dir_path( __FILE__ ) . 'inc/yourpropfirm-functions.php';
+require plugin_dir_path( __FILE__ ) . 'inc/admin/yourpropfirm-admin-functions.php';
+require plugin_dir_path( __FILE__ ) . 'inc/public/yourpropfirm-public-functions.php';
+require plugin_dir_path( __FILE__ ) . 'inc/helper/yourpropfirm-helper.php';
