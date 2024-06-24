@@ -19,7 +19,6 @@ function yourpropfirm_connection_settings_fields() {
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_test_key');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_endpoint_url', array('default' => 'https://api.ypf.customers.sigma-ventures.cloud/client/v1/users'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_api_key');
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_checkout_form', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'woocommerce_form'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_mt_ctrader', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
@@ -35,7 +34,6 @@ function yourpropfirm_connection_settings_fields() {
     add_settings_field('yourpropfirm_connection_sandbox_test_key', 'Sandbox Test Key', 'yourpropfirm_connection_sandbox_test_key_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_endpoint_url', 'Live Endpoint URL', 'yourpropfirm_connection_endpoint_url_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_api_key', 'Live API Key', 'yourpropfirm_connection_api_key_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
-    add_settings_field('yourpropfirm_connection_checkout_form', 'Checkout Form', 'yourpropfirm_connection_checkout_form_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_enable_mt_ctrader', 'Enable Ctrader', 'yourpropfirm_connection_enable_mt_ctrader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
@@ -88,14 +86,6 @@ function yourpropfirm_connection_api_key_callback() {
     echo '<input type="text" name="yourpropfirm_connection_api_key" value="' . esc_attr($option) . '" style="width: 400px;">';
 }
 
-// Render checkout form field
-function yourpropfirm_connection_checkout_form_callback() {
-    $option = get_option('yourpropfirm_connection_checkout_form');
-    echo '<select name="yourpropfirm_connection_checkout_form">';
-    echo '<option value="woocommerce_form"' . selected($option, 'woocommerce_form', false) . '>WooCommerce Checkout Form</option>';
-    echo '</select>';
-}
-
 // Render enable Ctrader field
 function yourpropfirm_connection_enable_mt_ctrader_callback() {
     $option = get_option('yourpropfirm_connection_enable_mt_ctrader');
@@ -117,16 +107,11 @@ function yourpropfirm_connection_default_mt_version_field_callback() {
 
 // Render MT version field
 function yourpropfirm_connection_mt_version_field_callback() {
-    $checkout_form = get_option('yourpropfirm_connection_checkout_form');
     $option = get_option('yourpropfirm_connection_mt_version_field');
-    if ($checkout_form !== 'disable') {
-        echo '<select name="yourpropfirm_connection_mt_version_field">';
-        echo '<option value="enable"' . selected($option, 'enable', false) . '>Enable</option>';
-        echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
-        echo '</select>';
-    } else {
-        echo 'N/A';
-    }
+    echo '<select name="yourpropfirm_connection_mt_version_field">';
+    echo '<option value="enable"' . selected($option, 'enable', false) . '>Enable</option>';
+    echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
+    echo '</select>';
 }
 
 // Render request method field
