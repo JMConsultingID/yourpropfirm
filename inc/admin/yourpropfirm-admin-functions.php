@@ -19,7 +19,7 @@ function yourpropfirm_add_menus() {
         'manage_options', // Capability
         'yourpropfirm_dashboard', // Menu slug
         'yourpropfirm_dashboard_page', // Function to display the page content
-        'dashicons-buddicons-forums', // Icon URL
+        'dashicons-screenoptions', // Icon URL
         3 // Position
     );
 
