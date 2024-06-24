@@ -7,7 +7,6 @@
  *
  * @package yourpropfirm
  */
-
 function yourpropfirm_display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
@@ -18,10 +17,8 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         return;
     }
 
-
     // Initialize options array with a default 'select' option
     $options = ['' => __('Select Meta Trader Version', 'yourpropfirm')]; // Default prompt option
-
 
     // Determine options based on enable_mt_ctrader setting
     if ($enable_mt_ctrader === 'enable') {
@@ -53,7 +50,6 @@ function yourpropfirm_display_custom_field_after_billing_form() {
             );
         }
     }
-
 
     ?>
     <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
@@ -95,3 +91,22 @@ function yourpropfirm_mt_version_update_post_meta_on_order_creation($order_id) {
     update_post_meta($order_id, '_yourpropfirm_mt_version', $mt_version_value);
 }
 add_action('woocommerce_new_order', 'yourpropfirm_mt_version_update_post_meta_on_order_creation');
+
+function yourpropfirm_display_order_meta_in_admin_order($order) {
+    $order_id = $order->get_id();
+    $ypf_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
+    $ypf_completed = get_post_meta($order_id, 'ypf_connection_completed', true);
+    echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
+    echo '<p><strong>' . __('YPF_MetaVersion') . ':</strong> ' . esc_html($ypf_meta_version) . '</p>';
+    echo '<p><strong>' . __('YPF_Completed') . ':</strong> ' . esc_html($ypf_completed) . '</p>';
+    echo '</div>';
+
+}
+add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_in_admin_order', 10, 1);
+
+add_filter('woocommerce_checkout_registration_enabled', '__return_false');
+add_filter('woocommerce_checkout_login_enabled', '__return_false');
+add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+
+
