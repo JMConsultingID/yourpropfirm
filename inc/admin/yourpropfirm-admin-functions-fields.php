@@ -130,7 +130,6 @@ function yourpropfirm_connection_mt_version_field_callback() {
 function yourpropfirm_connection_request_method_callback() {
     $option = get_option('yourpropfirm_connection_request_method');
     echo '<select name="yourpropfirm_connection_request_method">';
-    echo '<option value="curl"' . selected($option, 'curl', false) . '>CURL</option>';
     echo '<option value="wp_remote_post"' . selected($option, 'wp_remote_post', false) . '>WP REMOTE POST</option>';
     echo '</select>';
 }
