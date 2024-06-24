@@ -71,9 +71,27 @@ function yourpropfirm_display_custom_field_after_billing_form() {
 }
 add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
 
-add_action('woocommerce_checkout_process', 'yourpropfirm_validate_mt_version_field');
-function yourpropfirm_validate_mt_version_field() {
+add_action('woocommerce_checkout_process', 'yourpropfirm_mt_version_validate_field');
+function yourpropfirm_mt_version_validate_field() {
     if (isset($_POST['yourpropfirm_mt_version']) && empty($_POST['yourpropfirm_mt_version'])) {
         wc_add_notice(__('Please select a MetaTrader version.', 'yourpropfirm'), 'error');
     }
 }
+
+function yourpropfirm_mt_version_update_post_meta_on_order_creation($order_id) {
+    $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
+    $mt_version = isset($_POST['yourpropfirm_mt_version']) ? $_POST['yourpropfirm_mt_version'] : '';
+    if (!empty($mt_version)){
+        $mt_version_value = $mt_version;
+    }
+    else{
+        if (!empty($default_mt)){
+            $mt_version_value = $default_mt;
+        }
+        else{
+            $mt_version_value = 'CTrader';
+        }
+    }
+    update_post_meta($order_id, '_yourpropfirm_mt_version', $mt_version_value);
+}
+add_action('woocommerce_new_order', 'yourpropfirm_mt_version_update_post_meta_on_order_creation');
