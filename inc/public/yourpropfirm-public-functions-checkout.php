@@ -71,7 +71,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         <?php
     }
 }
-add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
+add_filter('woocommerce_checkout_fields', 'yourpropfirm_display_custom_field_after_billing_form');
 
 add_action('woocommerce_checkout_process', 'yourpropfirm_validate_mt_version_field');
 function yourpropfirm_validate_mt_version_field() {
