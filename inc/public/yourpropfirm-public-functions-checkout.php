@@ -9,22 +9,16 @@
  */
 
 function yourpropfirm_display_custom_field_after_billing_form() {
-    $plugin_enabled = get_option('yourpropfirm_connection_enabled');    
-    $checkout_forms = get_option('yourpropfirm_connection_checkout_form');
+    $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $enable_mt_ctrader = get_option('yourpropfirm_connection_enable_mt_ctrader');
-
 
     if ($plugin_enabled !== 'enable') {
         return;
     }
 
     if ($enable_mtversion_field !== 'enable') {
-        return;
-    }
-
-    if ($checkout_forms === 'woocommerce_form') {
         return;
     }
 
@@ -64,20 +58,20 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
 
-        ?>
-        <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
-            <h4><?php echo $checkout_forms; ?></h4>
-            <?php
-            woocommerce_form_field('yourpropfirm_mt_version', array(
-                'type' => 'select',
-                'class' => array('form-row-wide ypf_mt_version_field'),
-                'label' => __('MetaTrader Version', 'yourpropfirm'),
-                'required' => true,
-                'options' => $options // Use the conditional options here
-            ), '');
-            ?>
-        </div>
+    ?>
+    <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
+        <h4><?php echo $checkout_forms; ?></h4>
         <?php
+        woocommerce_form_field('yourpropfirm_mt_version', array(
+            'type' => 'select',
+            'class' => array('form-row-wide ypf_mt_version_field'),
+            'label' => __('MetaTrader Version', 'yourpropfirm'),
+            'required' => true,
+            'options' => $options // Use the conditional options here
+        ), '');
+        ?>
+    </div>
+    <?php
 }
 add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
 
