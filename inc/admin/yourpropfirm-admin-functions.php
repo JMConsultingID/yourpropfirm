@@ -63,4 +63,11 @@ function yourpropfirm_settings_page() {
 function yourpropfirm_addons_page() {
     echo '<div class="wrap"><h1>Addons</h1><p>This section allows you to manage addons for YourPropFirm plugin.</p></div>';
 }
-?>
+
+// Function to enqueue admin scripts and styles
+function yourpropfirm_enqueue_admin_assets() {
+    // Enqueue CSS file
+    wp_enqueue_style('yourpropfirm-admin-css', plugin_dir_url(__FILE__) . '../../assets/css/yourpropfirm-admin.css');
+    // Enqueue JS file
+    wp_enqueue_script('yourpropfirm-admin-js', plugin_dir_url(__FILE__) . '../../assets/js/yourpropfirm-admin.js', array('jquery'), null, true);
+}
