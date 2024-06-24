@@ -7,12 +7,6 @@
  *
  * @package yourpropfirm
  */
-// Additional Settings fo Woocommerce
-add_filter('woocommerce_checkout_registration_enabled', '__return_false');
-add_filter('woocommerce_checkout_login_enabled', '__return_false');
-add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
-add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
-
 function yourpropfirm_display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
@@ -69,11 +63,18 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     </div>
     <?php
 }
-add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
 
-add_action('woocommerce_checkout_process', 'yourpropfirm_mt_version_validate_field');
 function yourpropfirm_mt_version_validate_field() {
     if (isset($_POST['yourpropfirm_mt_version']) && empty($_POST['yourpropfirm_mt_version'])) {
         wc_add_notice(__('Please select a MetaTrader version.', 'yourpropfirm'), 'error');
     }
 }
+
+// Additional Settings fo Woocommerce
+add_filter('woocommerce_checkout_registration_enabled', '__return_false');
+add_filter('woocommerce_checkout_login_enabled', '__return_false');
+add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+
+add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
+add_action('woocommerce_checkout_process', 'yourpropfirm_mt_version_validate_field');
