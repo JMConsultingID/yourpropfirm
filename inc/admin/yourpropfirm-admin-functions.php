@@ -51,7 +51,12 @@ function yourpropfirm_dashboard_page() {
 
 // Function to display the settings page content
 function yourpropfirm_settings_page() {
-    echo '<div class="wrap"><h1>Settings</h1><p>Here you can configure the settings for YourPropFirm plugin.</p></div>';
+    echo '<div class="wrap"><h1>Settings</h1>';
+    echo '<form method="post" action="options.php">';
+    settings_fields('yourpropfirm_connection_settings');
+    do_settings_sections('yourpropfirm_connection_settings');
+    submit_button();
+    echo '</form></div>';
 }
 
 // Function to display the addons page content
