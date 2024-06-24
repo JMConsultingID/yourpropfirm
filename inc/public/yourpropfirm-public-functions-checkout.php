@@ -55,7 +55,6 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
 
-
         ?>
         <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
             <?php
@@ -64,7 +63,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                 'class' => array('form-row-wide ypf_mt_version_field'),
                 'label' => __('MetaTrader Version', 'yourpropfirm'),
                 'required' => true,
-                'options' => $checkout_form // Use the conditional options here
+                'options' => $options // Use the conditional options here
             ), '');
             ?>
         </div>
