@@ -24,7 +24,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         return;
     }
 
-    if ($checkout_forms !== 'woocommerce_form') {
+    if ($checkout_forms === 'woocommerce_form') {
         return;
     }
 
