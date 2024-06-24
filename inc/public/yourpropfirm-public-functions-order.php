@@ -16,7 +16,7 @@ function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
     }
 }
 
-function yourpropfirm_mt_version_update_post_meta_on_order_creation($order_id) {
+function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $mt_version = isset($_POST['yourpropfirm_mt_version']) ? $_POST['yourpropfirm_mt_version'] : '';
     if (!empty($mt_version)){
@@ -33,7 +33,7 @@ function yourpropfirm_mt_version_update_post_meta_on_order_creation($order_id) {
     update_post_meta($order_id, '_yourpropfirm_mt_version', $mt_version_value);
 }
 
-function yourpropfirm_update_additional_post_meta_on_order_creation($order_id) {
+function yourpropfirm_additional_post_meta_on_order_creation($order_id) {
     $ypf_connection_completed = 0;
     update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
 }
