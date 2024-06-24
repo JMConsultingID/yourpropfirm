@@ -14,13 +14,10 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $enable_mt_ctrader = get_option('yourpropfirm_connection_enable_mt_ctrader');
 
-    if ($plugin_enabled !== 'enable') {
+    if ($plugin_enabled !== 'enable' || $enable_mtversion_field !== 'enable') {
         return;
     }
 
-    if ($enable_mtversion_field !== 'enable') {
-        return;
-    }
 
     // Initialize options array with a default 'select' option
     $options = ['' => __('Select Meta Trader Version', 'yourpropfirm')]; // Default prompt option
