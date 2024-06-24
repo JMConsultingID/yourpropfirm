@@ -10,19 +10,19 @@ add_action('admin_init', 'yourpropfirm_connection_settings_fields');
 
 // Register and define the settings
 function yourpropfirm_connection_settings_fields() {
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enabled');
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_environment');
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enabled', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_environment', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_endpoint_url', array('default' => 'https://bqsyp740n4.execute-api.ap-southeast-1.amazonaws.com/client/v1/users'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_test_key');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_endpoint_url', array('default' => 'https://api.ypf.customers.sigma-ventures.cloud/client/v1/users'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_api_key');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_checkout_form', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'woocommerce_form'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_mt_ctrader', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'CTrader'));
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_response_header');
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
 
     add_settings_section('yourpropfirm_connection_general', 'General Settings', 'yourpropfirm_connection_general_section_callback', 'yourpropfirm_connection_settings');
 
