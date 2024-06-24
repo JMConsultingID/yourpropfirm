@@ -8,11 +8,20 @@
  * @package yourpropfirm
  */
 function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
-    $items = wc_get_order($order_id)->get_items();
-    foreach ($items as $item) {
+    global $woocommerce;
+    $order = wc_get_order($order_id);
+    if (!$order) {
+        return;
+    }
+
+    foreach ($order->get_items() as $item_id => $item) {
         $product_id = $item->get_product_id();
-        $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        update_post_meta($order_id, 'yourpropfirm_program_id', $program_id);
+        if ($product_id) {
+            $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
+            if ($program_id) {
+                update_post_meta($order_id, 'yourpropfirm_program_id', $program_id);
+            }
+        }
     }
 }
 
