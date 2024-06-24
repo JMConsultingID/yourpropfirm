@@ -55,7 +55,6 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
 
-    if ($checkout_form == 'woocommerce_form') {
         ?>
         <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
             <?php
@@ -64,11 +63,10 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                 'class' => array('form-row-wide ypf_mt_version_field'),
                 'label' => __('MetaTrader Version', 'yourpropfirm'),
                 'required' => true,
-                'options' => $options // Use the conditional options here
+                'options' => $checkout_form // Use the conditional options here
             ), '');
             ?>
         </div>
-        <?php
     }
 }
 add_action('woocommerce_after_checkout_billing_form', 'yourpropfirm_display_custom_field_after_billing_form');
