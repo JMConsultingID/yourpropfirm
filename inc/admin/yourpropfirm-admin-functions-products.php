@@ -42,7 +42,7 @@ function yourpropfirm_add_program_id_column_to_admin_products($columns) {
         $new_columns[$key] = $name;
 
         if ('sku' === $key) {
-            $new_columns['yourpropfirm_program_id'] = __('YRPF-ID', 'yourpropfirm');
+            $new_columns['yourpropfirm_program_id'] = __('ProgramID', 'yourpropfirm');
         }
     }
 
