@@ -9,16 +9,21 @@
  */
 
 function yourpropfirm_display_custom_field_after_billing_form() {
-    $plugin_enabled = get_option('yourpropfirm_connection_enabled');
-    if ($plugin_enabled !== 'enable') {
-        return;
-    }
-    $checkout_form = get_option('yourpropfirm_connection_checkout_form');
+    $plugin_enabled = get_option('yourpropfirm_connection_enabled');    
+    $checkout_forms = get_option('yourpropfirm_connection_checkout_form');
     $mt_version_field = get_option('yourpropfirm_connection_mt_version_field');
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $enable_mt_ctrader = get_option('yourpropfirm_connection_enable_mt_ctrader');
 
-    // Initialize options array
+
+    if ($plugin_enabled !== 'enable') {
+        return;
+    }
+
+    if ($mt_version_field !== 'enable') {
+        return;
+    }
+
     // Initialize options array with a default 'select' option
     $options = ['' => __('Select Meta Trader Version', 'yourpropfirm')]; // Default prompt option
 
@@ -57,7 +62,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
 
         ?>
         <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
-            <h4><?php echo $checkout_form; ?></h4>
+            <h4><?php echo $checkout_forms; ?></h4>
             <?php
             woocommerce_form_field('yourpropfirm_mt_version', array(
                 'type' => 'select',
