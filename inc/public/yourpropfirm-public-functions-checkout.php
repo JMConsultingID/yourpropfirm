@@ -24,6 +24,10 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         return;
     }
 
+    if ($checkout_forms !== 'woocommerce_form') {
+        return;
+    }
+
     // Initialize options array with a default 'select' option
     $options = ['' => __('Select Meta Trader Version', 'yourpropfirm')]; // Default prompt option
 
