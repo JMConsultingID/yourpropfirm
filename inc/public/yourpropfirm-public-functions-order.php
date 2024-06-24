@@ -9,21 +9,15 @@
  */
 function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
     global $woocommerce;
-    $order = wc_get_order($order_id);
-    if (!$order) {
-        return;
-    }
-
-    foreach ($order->get_items() as $item_id => $item) {
+    $items = wc_get_order($order_id)->get_items();
+    foreach ($items as $item) {
         $product_id = $item->get_product_id();
-        if ($product_id) {
-            $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-            if ($program_id) {
-                update_post_meta($order_id, 'yourpropfirm_program_id', $program_id);
-            }
-        }
+        $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
+        // Update order meta with program ID name
+        update_post_meta($order_id, 'yourpropfirm_program_id', $program_id);
     }
 }
+add_action('woocommerce_new_order', 'yourpropfirm_program_id_post_meta_on_order_creation');
 
 function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
@@ -61,7 +55,7 @@ function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
 
 }
 
-add_action('woocommerce_new_order', 'yourpropfirm_program_id_post_meta_on_order_creation');
+
 add_action('woocommerce_new_order', 'yourpropfirm_mt_version_post_meta_on_order_creation');
 add_action('woocommerce_new_order', 'yourpropfirm_additional_post_meta_on_order_creation');
 add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_after_billing_admin_order', 10, 1);
