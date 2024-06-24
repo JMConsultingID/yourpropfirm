@@ -11,7 +11,7 @@ add_action('admin_init', 'yourpropfirm_connection_settings_fields');
 // Register and define the settings
 function yourpropfirm_connection_settings_fields() {
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enabled', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_environment', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_environment', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'sandbox'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_endpoint_url', array('default' => 'https://bqsyp740n4.execute-api.ap-southeast-1.amazonaws.com/client/v1/users'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_test_key');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_endpoint_url', array('default' => 'https://api.ypf.customers.sigma-ventures.cloud/client/v1/users'));
