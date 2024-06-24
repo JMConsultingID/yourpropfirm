@@ -7,6 +7,12 @@
  *
  * @package yourpropfirm
  */
+// Additional Settings fo Woocommerce
+add_filter('woocommerce_checkout_registration_enabled', '__return_false');
+add_filter('woocommerce_checkout_login_enabled', '__return_false');
+add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
+
 function yourpropfirm_display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
@@ -93,17 +99,9 @@ add_action('woocommerce_new_order', 'yourpropfirm_mt_version_update_post_meta_on
 function yourpropfirm_display_order_meta_in_admin_order($order) {
     $order_id = $order->get_id();
     $ypf_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
-    $ypf_completed = get_post_meta($order_id, 'ypf_connection_completed', true);
     echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
-    echo '<p><strong>' . __('YPF_MetaVersion') . ':</strong> ' . esc_html($ypf_meta_version) . '</p>';
-    echo '<p><strong>' . __('YPF_Completed') . ':</strong> ' . esc_html($ypf_completed) . '</p>';
+    echo '<p><strong>' . __('YourPropFirm MetaVersion') . ':</strong> ' . esc_html($ypf_meta_version) . '</p>';
     echo '</div>';
 
 }
 add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_in_admin_order', 10, 1);
-
-// Additional Settings fo Woocommerce
-add_filter('woocommerce_checkout_registration_enabled', '__return_false');
-add_filter('woocommerce_checkout_login_enabled', '__return_false');
-add_filter('option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');
-add_filter('pre_option_woocommerce_enable_signup_and_login_from_checkout', '__return_false');

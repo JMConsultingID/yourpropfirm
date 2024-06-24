@@ -7,6 +7,12 @@
  *
  * @package yourpropfirm
  */
+function yourpropfirm_connection_response_logger() {
+    $logger = wc_get_logger();
+    $context = array('source' => 'yourpropfirm_connection_response_log');
+    return array('logger' => $logger, 'context' => $context);
+}
+
 // Hook for adding admin scripts
 add_action('admin_enqueue_scripts', 'yourpropfirm_enqueue_admin_assets');
 // Function to enqueue admin scripts and styles
@@ -15,6 +21,58 @@ function yourpropfirm_enqueue_admin_assets() {
     wp_enqueue_style('yourpropfirm-admin-css', plugin_dir_url(__FILE__) . '../../assets/css/yourpropfirm-admin.css');
     // Enqueue JS file
     wp_enqueue_script('yourpropfirm-admin-js', plugin_dir_url(__FILE__) . '../../assets/js/yourpropfirm-admin.js', array('jquery'), null, true);
+}
+
+function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value) {
+    $invoicesId = $order->get_id();
+    $productsId = $product_woo_id;
+    $invoicesIdStr = strval($invoicesId);
+    $productsIdStr = strval($productsId);
+    $user_email = $order->get_billing_email();
+    $user_first_name = $order->get_billing_first_name();
+    $user_last_name = $order->get_billing_last_name();
+    $user_address = $order->get_billing_address_1();
+    $user_city = $order->get_billing_city();
+    $user_zip_code = $order->get_billing_postcode();
+    $user_country = $order->get_billing_country();
+    $user_phone = $order->get_billing_phone();
+
+    return array(
+        'email' => $user_email,
+        'firstname' => $user_first_name,
+        'lastname' => $user_last_name,
+        'programId' => $program_id_value,             
+        'mtVersion' => $mt_version_value,
+        'addressLine' => $user_address,
+        'city' => $user_city,
+        'zipCode' => $user_zip_code,
+        'country' => $user_country,
+        'phone' => $user_phone,
+        'InvoiceId' => $invoicesIdStr,
+        'ProductId' => $productsIdStr
+    );
+}
+
+// Function to handle sending account creation request
+function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $metaKeyCurrency) {
+    $invoicesId = $order_id;
+    $productsId = $product_woo_id;
+    $invoicesIdStr = strval($invoicesId);
+    $productsIdStr = strval($productsId);
+    
+    $api_data_account = array(
+        'mtVersion' => $mt_version,
+        'programId' => $program_id,
+        'InvoiceId' => $invoicesIdStr,
+        'ProductId' => $productsIdStr
+    );
+    $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
+    $response = ypf_your_propfirm_plugin_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
+    
+    $http_status = $response['http_status'];
+    $api_response = $response['api_response'];
+
+    handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $metaKeyCurrency);
 }
 
 function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $metaKeyCurrency = '') {
@@ -119,11 +177,4 @@ function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_
         'http_status' => $http_status,
         'api_response' => $api_response
     );
-}
-
-
-function yourpropfirm_connection_response_logger() {
-    $logger = wc_get_logger();
-    $context = array('source' => 'yourpropfirm_connection_response_log');
-    return array('logger' => $logger, 'context' => $context);
 }
