@@ -22,7 +22,6 @@ function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
         }
     }
 }
-add_action('woocommerce_new_order', 'yourpropfirm_program_id_post_meta_on_order_creation');
 
 function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
