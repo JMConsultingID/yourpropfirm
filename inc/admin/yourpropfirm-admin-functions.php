@@ -64,6 +64,8 @@ function yourpropfirm_addons_page() {
     echo '<div class="wrap"><h1>Addons</h1><p>This section allows you to manage addons for YourPropFirm plugin.</p></div>';
 }
 
+// Hook for adding admin scripts
+add_action('admin_enqueue_scripts', 'yourpropfirm_enqueue_admin_assets');
 // Function to enqueue admin scripts and styles
 function yourpropfirm_enqueue_admin_assets() {
     // Enqueue CSS file
