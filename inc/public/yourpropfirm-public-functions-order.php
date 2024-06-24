@@ -8,13 +8,21 @@
  * @package yourpropfirm
  */
 function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
-    $items = wc_get_order($order_id)->get_items();
-    foreach ($items as $item) {
+    $order = wc_get_order($order_id);
+    $items = $order->get_items();
+    
+    foreach ($items as $item_id => $item) {
         $product_id = $item->get_product_id();
         $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        update_post_meta($order_id, '_yourpropfirm_program_id', $program_id);
+        
+        if (!empty($program_id)) {
+            wc_update_order_item_meta($item_id, '_yourpropfirm_program_id', $program_id);
+        } else {
+            wc_update_order_item_meta($item_id, '_yourpropfirm_program_id', 'programId is not loaded');
+        }
     }
 }
+add_action('woocommerce_new_order', 'yourpropfirm_program_id_post_meta_on_order_creation');
 
 function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
