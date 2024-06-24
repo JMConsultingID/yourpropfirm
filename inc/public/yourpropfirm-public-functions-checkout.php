@@ -96,12 +96,20 @@ function yourpropfirm_mt_version_update_post_meta_on_order_creation($order_id) {
 }
 add_action('woocommerce_new_order', 'yourpropfirm_mt_version_update_post_meta_on_order_creation');
 
-function yourpropfirm_display_order_meta_in_admin_order($order) {
+function yourpropfirm_update_additional_post_meta_on_order_creation($order_id) {
+    $ypf_connection_completed = 0;
+    update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
+}
+add_action('woocommerce_new_order', 'yourpropfirm_update_additional_post_meta_on_order_creation');
+
+function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
     $order_id = $order->get_id();
     $ypf_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
+    $ypf_connection_completed = get_post_meta($order_id, '_yourpropfirm_connection_completed', true);
     echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
     echo '<p><strong>' . __('YourPropFirm MetaVersion') . ':</strong> ' . esc_html($ypf_meta_version) . '</p>';
+    echo '<p><strong>' . __('YourPropFirm Completed') . ':</strong> ' . esc_html($ypf_connection_completed) . '</p>';
     echo '</div>';
 
 }
-add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_in_admin_order', 10, 1);
+add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_after_billing_admin_order', 10, 1);
