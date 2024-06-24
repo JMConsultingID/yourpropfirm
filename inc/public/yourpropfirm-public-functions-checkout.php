@@ -11,7 +11,7 @@
 function yourpropfirm_display_custom_field_after_billing_form() {
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');    
     $checkout_forms = get_option('yourpropfirm_connection_checkout_form');
-    $mt_version_field = get_option('yourpropfirm_connection_mt_version_field');
+    $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $enable_mt_ctrader = get_option('yourpropfirm_connection_enable_mt_ctrader');
 
@@ -20,7 +20,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         return;
     }
 
-    if ($mt_version_field !== 'enable') {
+    if ($enable_mtversion_field !== 'enable') {
         return;
     }
 
