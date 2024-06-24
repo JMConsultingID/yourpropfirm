@@ -10,6 +10,7 @@
 
 // Include admin functions
 require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions.php';
+require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-fields.php';
 
 // Include public functions
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions.php';
