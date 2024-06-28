@@ -61,6 +61,8 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 
 function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id) {
     global $woocommerce;
+    $log_data = yourpropfirm_connection_response_logger();
+    
     // Check if WooCommerce is active and the function exists
     if (function_exists('get_woocommerce_currency')) {
         $defaultcurrency = get_woocommerce_currency();
@@ -75,8 +77,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Get the currency from the order
     $order_currency_value = $order->get_currency();
 
-    $enable_response_header = get_option('yourpropfirm_connection_enable_response_header');
-    $log_data = yourpropfirm_connection_response_logger();
+    $enable_response_header = get_option('yourpropfirm_connection_enable_response_header');    
 
     $error_message = 'An error occurred while creating the user. Error Type Unknown.';
     if ($http_status == 201) {
