@@ -36,7 +36,7 @@ function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
 function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
     $order_id = $order->get_id();
     $yourpropfirm_program_id = get_post_meta($order_id, '_yourpropfirm_order_program_id', true);
-    $yourpropfirm_meta_version = get_post_meta($order_id, '_yourpropfirm_program_id', true);
+    $yourpropfirm_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
     $yourpropfirm_connection_completed = get_post_meta($order_id, '_yourpropfirm_connection_completed', true);
 
     echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
