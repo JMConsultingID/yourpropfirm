@@ -97,24 +97,4 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     }
 }
 
-// Function to handle sending account creation request
-function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity) {
-    $invoicesId = $order_id;
-    $productsId = $product_woo_id;
-    $invoicesIdStr = strval($invoicesId);
-    $productsIdStr = strval($productsId);
-    
-    $api_data_account = array(
-        'mtVersion' => $mt_version,
-        'programId' => $program_id,
-        'InvoiceId' => $invoicesIdStr,
-        'ProductId' => $productsIdStr
-    );
-    $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
-    $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
-    
-    $http_status = $response['http_status'];
-    $api_response = $response['api_response'];
-
-    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id);
-}
+add_action('woocommerce_order_status_changed', 'send_api_on_order_status_change', 10, 4);
