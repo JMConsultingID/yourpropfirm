@@ -97,4 +97,4 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     }
 }
 
-add_action('woocommerce_order_status_changed', 'send_api_on_order_status_change', 10, 4);
+add_action('woocommerce_order_status_changed', 'yourpropfirm_send_api_on_order_status_change', 10, 4);
