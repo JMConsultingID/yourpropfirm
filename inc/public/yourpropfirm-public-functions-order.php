@@ -7,17 +7,7 @@
  *
  * @package yourpropfirm
  */
-function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
-    $items = wc_get_order($order_id)->get_items();
-    foreach ($items as $item) {
-        $product_id = $item->get_product_id();
-        $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
-        update_post_meta($order_id, '_yourpropfirm_order_program_id', $program_id);
-    }
-}
-
-function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
-    $order = wc_get_order($order_id);
+function yourpropfirm_post_meta_on_order_creation($order_id) {
     $ypf_connection_completed = 0;
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $mt_version = isset($_POST['yourpropfirm_mt_version']) ? $_POST['yourpropfirm_mt_version'] : '';
@@ -31,11 +21,16 @@ function yourpropfirm_mt_version_post_meta_on_order_creation($order_id) {
         }
     }
     update_post_meta($order_id, '_yourpropfirm_mt_version', $mt_version_value);
+    update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
 }
 
-function yourpropfirm_additional_post_meta_on_order_creation($order_id) {
-    $ypf_connection_completed = 0;
-    update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
+function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
+    $items = wc_get_order($order_id)->get_items();
+    foreach ($items as $item) {
+        $product_id = $item->get_product_id();
+        $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
+        update_post_meta($order_id, '_yourpropfirm_order_program_id', $program_id);
+    }
 }
 
 function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
@@ -50,9 +45,8 @@ function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
     echo '<p><strong>' . __('YourPropFirm Completed') . ':</strong> ' . esc_html($yourpropfirm_connection_completed) . '</p>';
 }
 
+add_action('woocommerce_new_order', 'yourpropfirm_post_meta_on_order_creation');
 add_action('woocommerce_checkout_update_order_meta', 'yourpropfirm_program_id_post_meta_on_order_creation');
-add_action('woocommerce_checkout_update_order_meta', 'yourpropfirm_mt_version_post_meta_on_order_creation');
-add_action('woocommerce_checkout_update_order_meta', 'yourpropfirm_additional_post_meta_on_order_creation');
 
 add_action('woocommerce_admin_order_data_after_billing_address', 'yourpropfirm_display_order_meta_after_billing_admin_order', 10, 1);
 ?>
