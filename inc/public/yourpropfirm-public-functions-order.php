@@ -31,7 +31,7 @@ function yourpropfirm_post_meta_on_order_creation($order_id) {
     foreach ($order->get_items() as $item_id => $item) {
         $product_id = $item->get_product_id();
         if ($product_id) {
-            $program_id = get_post_meta($product_id, '_yourpropfirm_program_id', true);
+            $program_id = get_post_meta($product_id, '_program_id', true);
             if (!empty($program_id)) {
                 update_post_meta($order_id, '_yourpropfirm_order_program_id', $program_id);
             }
