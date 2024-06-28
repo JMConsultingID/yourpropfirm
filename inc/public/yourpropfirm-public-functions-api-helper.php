@@ -75,7 +75,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Get the currency from the order
     $order_currency_value = $order->get_currency();
 
-    $enable_response_header = get_option('yourpropfirm_connection_response_logger');
+    $enable_response_header = get_option('yourpropfirm_connection_enable_response_header');
     $log_data = yourpropfirm_connection_response_logger();
 
     $error_message = 'An error occurred while creating the user. Error Type Unknown.';
