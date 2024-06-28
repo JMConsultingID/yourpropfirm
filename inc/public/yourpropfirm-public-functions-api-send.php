@@ -12,6 +12,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     // Get the order object
     $order = wc_get_order($order_id);  
     $log_data = yourpropfirm_connection_response_logger();
+    $log_data['logger']->info('YPF Connection Begin Info : ',  $log_data['context']);
 
     // Retrieve endpoint URL and API Key from plugin settings
     $request_method = get_option('yourpropfirm_connection_request_method');
