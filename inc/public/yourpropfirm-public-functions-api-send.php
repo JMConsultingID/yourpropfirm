@@ -12,7 +12,6 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     // Get the order object
     $order = wc_get_order($order_id);  
     $log_data = yourpropfirm_connection_response_logger();
-    $log_data['logger']->info('YPF Connection Begin Info : ',  $log_data['context']);
 
     // Retrieve endpoint URL and API Key from plugin settings
     $request_method = get_option('yourpropfirm_connection_request_method');
@@ -42,7 +41,6 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     }
 
     if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
-        $log_data['logger']->info('YPF 1 : ',  $log_data['context']);
         // Check for transient to prevent duplicate API calls
         if (false === get_transient('send_api_lock_' . $order_id)) {
             // Set transient to prevent duplicate API calls within 10 seconds
@@ -70,8 +68,6 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $user_data = json_decode($response['api_response'], true);
                     $user_id = isset($user_data['id']) ? $user_data['id'] : null;
 
-                    $log_data['logger']->info('YPF 2 First Products : ',  $log_data['context']);
-
                     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id);
 
                     // Loop through the quantity of the first product
@@ -80,7 +76,6 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                             $quantity_first_product_qty = $i+1;
                             yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id);
                         }
-                        $log_data['logger']->info('YPF 2 First Products with Quantity : ',  $log_data['context']);
                     }
                 } elseif (!empty($program_id) && $first_product && $user_id) {
                     // For subsequent products, loop through each quantity
@@ -88,14 +83,12 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                         $quantity_other_product_qty = $i+1;
                         yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id);
                     }
-                    $log_data['logger']->info('YPF 2 Second Products with Quantity : ',  $log_data['context']);
                 }
             $products_loop_id++;
             }            
             $ypf_connection_completed = 1; 
             update_post_meta($order_id, '_yourpropfirm_order_program_id_completed', $program_id);               
             update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
-            $log_data['logger']->info('YPF 3 End: ',  $log_data['context']);
             delete_transient('send_api_lock_' . $order_id);
         }
     }
