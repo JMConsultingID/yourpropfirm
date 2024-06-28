@@ -38,6 +38,7 @@ function yourpropfirm_connection_settings_fields() {
     add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
+    add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_enable_response_header', 'Save Log Response', 'yourpropfirm_connection_enable_response_header_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
 }
 
