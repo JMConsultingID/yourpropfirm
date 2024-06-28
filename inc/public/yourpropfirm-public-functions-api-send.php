@@ -55,7 +55,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             foreach ($order->get_items() as $item_id => $item) {
                 $product = $item->get_product();
                 $quantity = $item->get_quantity();            
-                $program_id = get_post_meta($product->get_id(), '_yourpropfirm_order_program_id', true);
+                $program_id = get_post_meta($product->get_id(), '_yourpropfirm_program_id', true);
                 $product_woo_id = $product->get_id();
 
                 if (!empty($program_id) && !$first_product) {
