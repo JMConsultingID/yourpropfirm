@@ -10,8 +10,7 @@
 // Create user via API when successful payment
 function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $new_status, $order) {
     // Get the order object
-    $order = wc_get_order($order_id);  
-    $log_data = yourpropfirm_connection_response_logger();
+    $order = wc_get_order($order_id);
 
     // Retrieve endpoint URL and API Key from plugin settings
     $request_method = get_option('yourpropfirm_connection_request_method');
@@ -86,8 +85,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 }
             $products_loop_id++;
             }            
-            $ypf_connection_completed = 1; 
-            update_post_meta($order_id, '_yourpropfirm_order_program_id_completed', $program_id);               
+            $ypf_connection_completed = 1;           
             update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
             delete_transient('send_api_lock_' . $order_id);
         }

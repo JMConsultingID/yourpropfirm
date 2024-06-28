@@ -126,7 +126,6 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     wc_create_order_note($order_id, $combined_notes, $added_by_user = false, $customer_note = false);
     $order->save(); // Don't forget to save the order to store these meta data
 	$log_data['logger']->info($combined_note_logs,  $log_data['context']);
-	$log_data['logger']->info('YPF 2 handle_api_response_error : ',  $log_data['context']);
 }
 
 function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay=0) {
