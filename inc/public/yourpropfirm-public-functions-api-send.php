@@ -42,6 +42,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     }
 
     if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
+        $log_data['logger']->info('YPF Connection Begin Info 2: ',  $log_data['context']);
         // Check for transient to prevent duplicate API calls
         if (false === get_transient('send_api_lock_' . $order_id)) {
             // Set transient to prevent duplicate API calls within 10 seconds
@@ -91,7 +92,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $ypf_connection_completed = 1; 
             update_post_meta($order_id, '_yourpropfirm_order_program_id_completed', $program_id);               
             update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
-
+            $log_data['logger']->info('YPF Connection Begin Info 3 : ',  $log_data['context']);
             // Clear the transient after processing
             delete_transient('send_api_lock_' . $order_id);
         }
