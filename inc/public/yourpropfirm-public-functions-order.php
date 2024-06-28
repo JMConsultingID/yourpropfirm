@@ -36,13 +36,17 @@ function yourpropfirm_program_id_post_meta_on_order_creation($order_id) {
 function yourpropfirm_display_order_meta_after_billing_admin_order($order) {
     $order_id = $order->get_id();
     $yourpropfirm_program_id = get_post_meta($order_id, '_yourpropfirm_order_program_id', true);
+    $yourpropfirm_program_id_completed = get_post_meta($order_id, '_yourpropfirm_order_program_id_completed', true);
     $yourpropfirm_meta_version = get_post_meta($order_id, '_yourpropfirm_mt_version', true);
     $yourpropfirm_connection_completed = get_post_meta($order_id, '_yourpropfirm_connection_completed', true);
 
+
     echo '<h3>' . __('YourPropFirm Program Details') . '</h3>';
     echo '<p><strong>' . __('YourPropFirm Program ID') . ':</strong> ' . esc_html($yourpropfirm_program_id) . '</p>';
+    echo '<p><strong>' . __('YourPropFirm Program ID Completed') . ':</strong> ' . esc_html($yourpropfirm_program_id_completed) . '</p>';
     echo '<p><strong>' . __('YourPropFirm Meta Version') . ':</strong> ' . esc_html($yourpropfirm_meta_version) . '</p>';
     echo '<p><strong>' . __('YourPropFirm Completed') . ':</strong> ' . esc_html($yourpropfirm_connection_completed) . '</p>';
+    
 }
 
 add_action('woocommerce_new_order', 'yourpropfirm_post_meta_on_order_creation');
