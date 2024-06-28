@@ -83,7 +83,7 @@ function yourpropfirm_add_program_id_quick_edit_field($column_name, $post_type) 
     echo '<fieldset class="inline-edit-col-left">
             <div class="inline-edit-col">
                 <label class="alignleft">
-                    <span class="title">' . __('YPF-ProgramID', 'yourpropfirm') . '</span>
+                    <span class="title">' . __('YPFID', 'yourpropfirm') . '</span>
                     <span class="input-text-wrap">
                         <input type="text" name="_yourpropfirm_program_id" class="ptitle" value="" />
                     </span>
