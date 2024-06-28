@@ -61,7 +61,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
-                    $api_data = yourpropfirm_get_api_dataa($order, $order_id, $product_woo_id, $program_id, $mt_version_value);
+                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value);
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
                     $http_status = $response['http_status'];
                     $api_response = $response['api_response'];
