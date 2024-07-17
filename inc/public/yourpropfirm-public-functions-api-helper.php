@@ -23,11 +23,11 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         'InvoiceId' => $invoicesIdStr,
         'ProductId' => $productsIdStr
     );
-    
+
     if ($profitSplit != 0) {
         $api_data_account['profitSplit'] = $profitSplit;
     }
-    
+
     $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
     
@@ -126,7 +126,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "profitSplit: " . $profitSplit . "\n";
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
-$profitSplit
+    
     // Combine all API responses For Log WC-Logger
     $combined_note_logs = "\n";
     $combined_note_logs .= "--Begin YPF Response--\n";
