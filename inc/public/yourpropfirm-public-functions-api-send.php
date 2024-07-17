@@ -45,9 +45,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             // Set transient to prevent duplicate API calls within 10 seconds
             set_transient('send_api_lock_' . $order_id, true, 3);
             $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
-            $default_profitSplit = 80;
+            $default_profitSplit = 0;
             $mt_version_value = get_post_meta($order_id, '_yourpropfirm_mt_version', true) ?: $default_mt;
-            $profitSplit = get_post_meta($order_id, 'profitSplit', true) ?: $default_profitSplit;
+            $profitSplit = get_post_meta($order_id, 'profitSplit', true) ? get_post_meta($order_id, 'profitSplit', true) : $default_profitSplit;
             $products_loop_id = 1;
             
             // First product and quantity handling
