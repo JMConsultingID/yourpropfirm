@@ -13,9 +13,6 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
-
-    // Ensure $profitSplit is 0 if it is empty
-    $profitSplit = !empty($profitSplit) ? $profitSplit : 0;
     
     $api_data_account = array(
         'mtVersion' => $mt_version,
@@ -50,9 +47,6 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-
-    // Ensure $profitSplit is 0 if it is empty
-    $profitSplit = !empty($profitSplit) ? $profitSplit : 0;
 
     $data = array(
         'email' => $user_email,
@@ -115,8 +109,8 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Combine all API responses into one note
     $combined_notes = "--YourPropfirm--\n";
     $combined_notes .= "Response Loop : " . $products_loop_id . "\n";
-    $combined_notes .= "OrderID : " . $order_id . "\n";  
-    $combined_notes .= "ProductID : " . $product_woo_id . "\n"; 
+    $combined_notes .= "InvoiceId : " . $order_id . "\n";  
+    $combined_notes .= "ProductId : " . $product_woo_id . "\n"; 
     $combined_notes .= "Quantity : " . $quantity . "\n";
     $combined_notes .= "Currency : " . $order_currency_value . "\n";
     $combined_notes .= "HTTP Response : " . $http_status . "\n";
@@ -126,13 +120,13 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "profitSplit: " . $profitSplit . "\n";
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
-    
+
     // Combine all API responses For Log WC-Logger
     $combined_note_logs = "\n";
     $combined_note_logs .= "--Begin YPF Response--\n";
     $combined_note_logs .= "Response Loop : " . $products_loop_id . "\n";
-    $combined_note_logs .= "OrderID : " . $order_id . "\n";  
-    $combined_note_logs .= "ProductID : " . $product_woo_id . "\n"; 
+    $combined_note_logs .= "InvoiceId : " . $order_id . "\n";  
+    $combined_note_logs .= "ProductId : " . $product_woo_id . "\n"; 
     $combined_note_logs .= "Quantity : " . $quantity . "\n";
     $combined_note_logs .= "Currency : " . $order_currency_value . "\n";
     $combined_note_logs .= "HTTP Response : " . $http_status . "\n";
