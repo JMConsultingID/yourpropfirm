@@ -48,11 +48,12 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $default_profitSplit = 0;
 
             // Retrieve the mt_version_value, use default if not set or empty
-            $mt_version_value = get_post_meta($order->get_id(), '_yourpropfirm_mt_version', true) ?: $default_mt;
+            $mt_version_value = $order->get_meta('_yourpropfirm_mt_version') ?: $default_mt;
 
             // Retrieve the profitSplit, use default if not set or empty
-            $profitSplit = get_post_meta($order->get_id(), 'profitSplit', true);
+            $profitSplit = $order->get_meta('profitSplit');
             $profitSplit = $profitSplit !== '' ? $profitSplit : $default_profitSplit;
+
 
             $products_loop_id = 1;
             
