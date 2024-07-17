@@ -45,7 +45,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             // Set transient to prevent duplicate API calls within 10 seconds
             set_transient('send_api_lock_' . $order_id, true, 3);
             $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
+            $default_profitSplit = 0;
             $mt_version_value = get_post_meta($order->get_id(), '_yourpropfirm_mt_version', true) ?: $default_mt;
+            $profitSplit = get_post_meta($order->get_id(), 'profitSplit', true) ?: $default_profitSplit;
             $products_loop_id = 1;
             
             // First product and quantity handling
@@ -58,7 +60,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
-                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value);
+                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $profitSplit);
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
                     $http_status = $response['http_status'];
                     $api_response = $response['api_response'];
@@ -67,20 +69,20 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $user_data = json_decode($response['api_response'], true);
                     $user_id = isset($user_data['id']) ? $user_data['id'] : null;
 
-                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id);
+                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit);
 
                     // Loop through the quantity of the first product
                     if ($user_id && $quantity > 1) {
                         for ($i = 1; $i < $quantity; $i++) {
                             $quantity_first_product_qty = $i+1;
-                            yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id);
+                            yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit);
                         }
                     }
                 } elseif (!empty($program_id) && $first_product && $user_id) {
                     // For subsequent products, loop through each quantity
                     for ($i = 0; $i < $quantity; $i++) {
                         $quantity_other_product_qty = $i+1;
-                        yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id);
+                        yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit);
                     }
                 }
             $products_loop_id++;

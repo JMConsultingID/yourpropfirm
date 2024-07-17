@@ -8,11 +8,14 @@
  * @package yourpropfirm
  */
 // Function to handle sending account creation request
-function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity) {
+function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit) {
     $invoicesId = $order_id;
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
+
+    // Ensure $profitSplit is 0 if it is empty
+    $profitSplit = !empty($profitSplit) ? $profitSplit : 0;
     
     $api_data_account = array(
         'mtVersion' => $mt_version,
@@ -20,16 +23,21 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         'InvoiceId' => $invoicesIdStr,
         'ProductId' => $productsIdStr
     );
+    
+    if ($profitSplit != 0) {
+        $api_data_account['profitSplit'] = $profitSplit;
+    }
+    
     $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
     
     $http_status = $response['http_status'];
     $api_response = $response['api_response'];
 
-    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id);
+    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit);
 }
 
-function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value) {
+function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $profitSplit) {  
     $invoicesId = $order->get_id();
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -43,11 +51,14 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
 
-    return array(
+    // Ensure $profitSplit is 0 if it is empty
+    $profitSplit = !empty($profitSplit) ? $profitSplit : 0;
+
+    $data = array(
         'email' => $user_email,
         'firstname' => $user_first_name,
         'lastname' => $user_last_name,
-        'programId' => $program_id_value,             
+        'programId' => $program_id_value,
         'mtVersion' => $mt_version_value,
         'addressLine' => $user_address,
         'city' => $user_city,
@@ -57,9 +68,15 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'InvoiceId' => $invoicesIdStr,
         'ProductId' => $productsIdStr
     );
+
+    if ($profitSplit != 0) {
+        $data['profitSplit'] = $profitSplit;
+    }
+
+    return $data;
 }
 
-function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id) {
+function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $profitSplit) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
     
@@ -98,6 +115,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Combine all API responses into one note
     $combined_notes = "--YourPropfirm--\n";
     $combined_notes .= "Response Loop : " . $products_loop_id . "\n";
+    $combined_notes .= "OrderID : " . $order_id . "\n";  
     $combined_notes .= "ProductID : " . $product_woo_id . "\n"; 
     $combined_notes .= "Quantity : " . $quantity . "\n";
     $combined_notes .= "Currency : " . $order_currency_value . "\n";
@@ -105,9 +123,10 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "YPF User ID : " . $user_id . "\n";       
     $combined_notes .= "ProgramID: " . $program_id_value . "\n";
     $combined_notes .= "MTVersion: " . $mt_version_value . "\n";
+    $combined_notes .= "profitSplit: " . $profitSplit . "\n";
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
-
+$profitSplit
     // Combine all API responses For Log WC-Logger
     $combined_note_logs = "\n";
     $combined_note_logs .= "--Begin YPF Response--\n";
@@ -120,6 +139,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_note_logs .= "YPF User ID : " . $user_id . "\n";         
     $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
     $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
+    $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
     $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
 
