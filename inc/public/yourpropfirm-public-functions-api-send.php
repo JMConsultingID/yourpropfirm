@@ -41,9 +41,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
     if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
         // Check for transient to prevent duplicate API calls
-        if (false === get_transient('send_api_lock_' . $order_id)) {
+        // if (false === get_transient('send_api_lock_' . $order_id)) {
             // Set transient to prevent duplicate API calls within 10 seconds
-            set_transient('send_api_lock_' . $order_id, true, 3);
+            // set_transient('send_api_lock_' . $order_id, true, 90);
             $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
             $default_profitSplit = 0;
 
@@ -96,8 +96,8 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             }            
             $ypf_connection_completed = 1;           
             update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
-            delete_transient('send_api_lock_' . $order_id);
-        }
+            // delete_transient('send_api_lock_' . $order_id);
+        // }
     }
 }
 
