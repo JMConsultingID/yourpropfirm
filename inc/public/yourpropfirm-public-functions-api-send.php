@@ -8,7 +8,6 @@
  * @package yourpropfirm
  */
 // Create user via API when successful payment
-// Create user via API when successful payment
 function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $new_status, $order) {
     // Get the order object
     $order = wc_get_order($order_id);
@@ -20,7 +19,6 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     if ($plugin_enabled !== 'enable') {
-        yourpropfirm_log_message("Plugin is not enabled.");
         return;
     }
 
@@ -36,79 +34,71 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
         $api_key = esc_attr(get_option('yourpropfirm_connection_api_key'));
     }
 
-    yourpropfirm_log_message("Environment: $environment, Endpoint URL: $endpoint_url, API Key: $api_key");
-
     // Check if endpoint URL and API Key are provided
     if (empty($endpoint_url) || empty($api_key)) {
-        yourpropfirm_log_message("Endpoint URL or API Key is missing.");
         return;
     }
 
-    yourpropfirm_log_message("Order ID: $order_id, Old Status: $old_status, New Status: $new_status, Completed: $ypf_connection_completed");
-
     if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
-        $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
-        $default_profitSplit = 0;
+        // Check for transient to prevent duplicate API calls
+        if (false === get_transient('send_api_lock_' . $order_id)) {
+            // Set transient to prevent duplicate API calls within 10 seconds
+            set_transient('send_api_lock_' . $order_id, true, 3);
+            $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
+            $default_profitSplit = 0;
 
-        // Retrieve the mt_version_value, use default if not set or empty
-        $mt_version_value = $order->get_meta('_yourpropfirm_mt_version') ?: $default_mt;
+            // Retrieve the mt_version_value, use default if not set or empty
+            $mt_version_value = $order->get_meta('_yourpropfirm_mt_version') ?: $default_mt;
 
-        // Retrieve the profitSplit, use default if not set or empty
-        $profitSplit = $order->get_meta('profitSplit');
-        $profitSplit = $profitSplit !== '' ? $profitSplit : $default_profitSplit;
+            // Retrieve the profitSplit, use default if not set or empty
+            $profitSplit = $order->get_meta('profitSplit');
+            $profitSplit = $profitSplit !== '' ? $profitSplit : $default_profitSplit;
 
-        $products_loop_id = 1;
-        
-        // First product and quantity handling
-        foreach ($order->get_items() as $item_id => $item) {
-            $product = $item->get_product();
-            $quantity = $item->get_quantity();            
-            $program_id = get_post_meta($product->get_id(), '_yourpropfirm_program_id', true);
-            $product_woo_id = $product->get_id();
 
-            if (!empty($program_id) && !$first_product) {
-                // If first product, send initial request to create user
-                $first_product = true;
-                $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $profitSplit);
-                $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
-                $http_status = $response['http_status'];
-                $api_response = $response['api_response'];
-                $quantity_first_product = 1;
-                                
-                $user_data = json_decode($response['api_response'], true);
-                $user_id = isset($user_data['id']) ? $user_data['id'] : null;
+            $products_loop_id = 1;
+            
+            // First product and quantity handling
+            foreach ($order->get_items() as $item_id => $item) {
+                $product = $item->get_product();
+                $quantity = $item->get_quantity();            
+                $program_id = get_post_meta($product->get_id(), '_yourpropfirm_program_id', true);
+                $product_woo_id = $product->get_id();
 
-                yourpropfirm_log_message("API Response for Order ID: $order_id, HTTP Status: $http_status, API Response: $api_response");
+                if (!empty($program_id) && !$first_product) {
+                    // If first product, send initial request to create user
+                    $first_product = true;
+                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $profitSplit);
+                    $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
+                    $http_status = $response['http_status'];
+                    $api_response = $response['api_response'];
+                    $quantity_first_product = 1;
+                                    
+                    $user_data = json_decode($response['api_response'], true);
+                    $user_id = isset($user_data['id']) ? $user_data['id'] : null;
 
-                yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit);
+                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit);
 
-                // Loop through the quantity of the first product
-                if ($user_id && $quantity > 1) {
-                    for ($i = 1; $i < $quantity; $i++) {
-                        $quantity_first_product_qty = $i+1;
-                        yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit);
+                    // Loop through the quantity of the first product
+                    if ($user_id && $quantity > 1) {
+                        for ($i = 1; $i < $quantity; $i++) {
+                            $quantity_first_product_qty = $i+1;
+                            yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit);
+                        }
+                    }
+                } elseif (!empty($program_id) && $first_product && $user_id) {
+                    // For subsequent products, loop through each quantity
+                    for ($i = 0; $i < $quantity; $i++) {
+                        $quantity_other_product_qty = $i+1;
+                        yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit);
                     }
                 }
-            } elseif (!empty($program_id) && $first_product && $user_id) {
-                // For subsequent products, loop through each quantity
-                for ($i = 0; $i < $quantity; $i++) {
-                    $quantity_other_product_qty = $i+1;
-                    yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit);
-                }
-            }
-        $products_loop_id++;
-        }            
-        $ypf_connection_completed = 1;           
-        update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
+            $products_loop_id++;
+            }            
+            $ypf_connection_completed = 1;           
+            update_post_meta($order_id, '_yourpropfirm_connection_completed', $ypf_connection_completed);
+            delete_transient('send_api_lock_' . $order_id);
+        }
     }
 }
 
 add_action('woocommerce_order_status_changed', 'yourpropfirm_send_api_on_order_status_change', 10, 4);
-
-// Custom logging function
-function yourpropfirm_log_message($message) {
-    $log_data = yourpropfirm_connection_response_logger();
-    $logger = $log_data['logger'];
-    $context = $log_data['context'];
-    $logger->info($message, $context);
-}
