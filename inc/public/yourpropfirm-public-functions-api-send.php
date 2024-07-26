@@ -8,6 +8,7 @@
  * @package yourpropfirm
  */
 // Create user via API when successful payment
+// Create user via API when successful payment
 function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $new_status, $order) {
     // Get the order object
     $order = wc_get_order($order_id);
@@ -34,6 +35,8 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
         $endpoint_url = esc_attr(get_option('yourpropfirm_connection_endpoint_url'));
         $api_key = esc_attr(get_option('yourpropfirm_connection_api_key'));
     }
+
+    yourpropfirm_log_message("Environment: $environment, Endpoint URL: $endpoint_url, API Key: $api_key");
 
     // Check if endpoint URL and API Key are provided
     if (empty($endpoint_url) || empty($api_key)) {
