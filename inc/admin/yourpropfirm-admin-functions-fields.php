@@ -139,8 +139,8 @@ function yourpropfirm_connection_request_delay_callback() {
 // Render environment field
 function yourpropfirm_connection_enable_addon_callback() {
     $option = get_option('yourpropfirm_connection_enable_addon');
-    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="1"' . checked($option, '1', false) . '>Yes</label>';
-    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="0"' . checked($option, '0', false) . '>No</label>';
+    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="1"' . checked($option, '1', false) . '>Yes </label>';
+    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="0"' . checked($option, '0', false) . '>No </label>';
 }
 
 // Render enable response header field
