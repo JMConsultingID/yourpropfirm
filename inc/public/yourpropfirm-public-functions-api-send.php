@@ -77,6 +77,15 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $user_data = json_decode($response['api_response'], true);
                     $user_id = isset($user_data['id']) ? $user_data['id'] : null;
 
+                    // Combine all API responses For Log WC-Logger
+                    $combined_note_hit_logs = "\n";
+                    $combined_note_hit_logs .= "--Log Send API YPF--\n";
+                    $combined_note_hit_logs .= "Endpoint URL: " . $endpoint_url . "\n";
+                    $combined_note_hit_logs .= "API Key: " . yourpropfirm_connection_mask_api_key($api_key) . "\n";
+                    $combined_note_hit_logs .= "API Data: " . json_encode($api_data) . "\n";
+                    $combined_note_hit_logs .= "--End Log--\n";
+                    $log_data['logger']->info($combined_note_hit_logs,  $log_data['context']);
+
                     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit);
 
                     // Loop through the quantity of the first product
@@ -85,16 +94,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                             $quantity_first_product_qty = $i+1;
                             yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit);
                         }
-                    }
-                    // Combine all API responses For Log WC-Logger
-                    $combined_note_hit_logs = "\n";
-                    $combined_note_hit_logs .= "--Log Send API YPF--\n";
-                    $combined_note_hit_logs .= "Endpoint URL: " . $endpoint_url . "\n";
-                    $combined_note_hit_logs .= "API Key: " . yourpropfirm_connection_mask_api_key($api_key) . "\n";
-                    $combined_note_hit_logs .= "API Data: " . json_encode($api_data) . "\n";
-                    $combined_note_hit_logs .= "Request Delay: " . $request_delay . " seconds\n";
-                    $combined_note_hit_logs .= "--End Log--\n";
-                    $log_data['logger']->info($combined_note_hit_logs,  $log_data['context']);
+                    }                    
                 } elseif (!empty($program_id) && $first_product && $user_id) {
                     // For subsequent products, loop through each quantity
                     for ($i = 0; $i < $quantity; $i++) {
