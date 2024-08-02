@@ -117,7 +117,9 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "YPF User ID : " . $user_id . "\n";       
     $combined_notes .= "ProgramID: " . $program_id_value . "\n";
     $combined_notes .= "MTVersion: " . $mt_version_value . "\n";
-    $combined_notes .= "profitSplit: " . $profitSplit . "\n";
+    if ($profitSplit !== '0' && !empty($profitSplit)) {
+        $combined_notes .= "profitSplit: " . $profitSplit . "\n";
+    }
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
 
@@ -133,7 +135,9 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_note_logs .= "YPF User ID : " . $user_id . "\n";         
     $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
     $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
-    $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
+    if ($profitSplit !== '0' && !empty($profitSplit)) {
+        $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
+    }
     $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
 
