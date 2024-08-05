@@ -8,7 +8,7 @@
  * @package yourpropfirm
  */
 // Function to handle sending account creation request
-function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit) {
+function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     $invoicesId = $order_id;
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -21,8 +21,16 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         'ProductId' => $productsIdStr
     );
 
-    if ($profitSplit != 0) {
+    if ($profitSplit !== '0') {
         $api_data_account['profitSplit'] = $profitSplit;
+    }
+
+    if ($withdrawActiveDays !== '0') {
+        $api_data_account['withdrawActiveDays'] = $withdrawActiveDays;
+    }
+
+    if ($withdrawTradingDays !== '0') {
+        $api_data_account['withdrawTradingDays'] = $withdrawTradingDays;
     }
 
     $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
@@ -31,10 +39,10 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
     $http_status = $response['http_status'];
     $api_response = $response['api_response'];
 
-    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit);
+    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
 
-function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $profitSplit) {  
+function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
     $invoicesId = $order->get_id();
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -63,14 +71,22 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'ProductId' => $productsIdStr
     );
 
-    if ($profitSplit != 0) {
+    if ($profitSplit !== '0') {
         $data['profitSplit'] = $profitSplit;
+    }
+
+    if ($withdrawActiveDays !== '0') {
+        $data['withdrawActiveDays'] = $withdrawActiveDays;
+    }
+
+    if ($withdrawTradingDays !== '0') {
+        $data['withdrawTradingDays'] = $withdrawTradingDays;
     }
 
     return $data;
 }
 
-function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $profitSplit) {
+function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
     
@@ -120,6 +136,12 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     if ($profitSplit !== '0' && !empty($profitSplit)) {
         $combined_notes .= "profitSplit: " . $profitSplit . "\n";
     }
+    if (($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
+        $combined_notes .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
+    }
+    if (($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
+        $combined_notes .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
+    }
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
 
@@ -137,6 +159,12 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
     if ($profitSplit !== '0' && !empty($profitSplit)) {
         $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
+    }
+    if (($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
+        $combined_note_logs .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
+    }
+    if (($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
+        $combined_note_logs .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
     $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
