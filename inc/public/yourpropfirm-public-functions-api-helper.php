@@ -136,10 +136,10 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     if ($profitSplit !== '0' && !empty($profitSplit)) {
         $combined_notes .= "profitSplit: " . $profitSplit . "\n";
     }
-    if (($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
+    if ($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
         $combined_notes .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
     }
-    if (($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
+    if ($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
         $combined_notes .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
     $combined_notes .= "Response: " . $api_response_note . "\n";
@@ -160,19 +160,20 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     if ($profitSplit !== '0' && !empty($profitSplit)) {
         $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
     }
-    if (($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
+    if ($withdrawActiveDays !== '0' && !empty($withdrawActiveDays)) {
         $combined_note_logs .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
     }
-    if (($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
+    if ($withdrawTradingDays !== '0' && !empty($withdrawTradingDays)) {
         $combined_note_logs .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
+
     $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
 
     // Add the combined note
     wc_create_order_note($order_id, $combined_notes, $added_by_user = false, $customer_note = false);
     $order->save(); // Don't forget to save the order to store these meta data
-	$log_data['logger']->info($combined_note_logs,  $log_data['context']);
+    $log_data['logger']->info($combined_note_logs,  $log_data['context']);
 }
 
 function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay=0) {
