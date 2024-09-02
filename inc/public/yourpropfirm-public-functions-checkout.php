@@ -81,7 +81,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         woocommerce_form_field('yourpropfirm_mt_version', array(
             'type' => 'select',
             'class' => array('form-row-wide ypf_mt_version_field'),
-            'label' => __('MetaTrader Version', 'yourpropfirm'),
+            'label' => __('Trading Platforms', 'yourpropfirm'),
             'required' => true,
             'options' => $options // Use the conditional options here
         ), '');
@@ -92,7 +92,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
 
 function yourpropfirm_mt_version_validate_field() {
     if (isset($_POST['yourpropfirm_mt_version']) && empty($_POST['yourpropfirm_mt_version'])) {
-        wc_add_notice(__('Please select a MetaTrader version.', 'yourpropfirm'), 'error');
+        wc_add_notice(__('Please select a Trading Platforms.', 'yourpropfirm'), 'error');
     }
 }
 
