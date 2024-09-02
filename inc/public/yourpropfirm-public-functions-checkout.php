@@ -21,8 +21,13 @@ function yourpropfirm_display_custom_field_after_billing_form() {
 
     if ($custom_trader_enabled === 'enable') {
         $options = ['' => __('Select Trading Platform', 'yourpropfirm')];
+        if (!empty($trading_platforms_options['enable_mt4'])) {
+            $options['MT4'] = __('MT4', 'yourpropfirm');
+        }
+        if (!empty($trading_platforms_options['enable_mt5'])) {
+            $options['MT5'] = __('MT5', 'yourpropfirm');
+        }
 
-        // Menambahkan platform trading yang diaktifkan ke dalam opsi
         if (!empty($trading_platforms_options['enable_ctrader'])) {
             $options['CTrader'] = __('cTrader', 'yourpropfirm');
         }

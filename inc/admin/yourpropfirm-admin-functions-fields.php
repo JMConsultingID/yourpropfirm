@@ -125,6 +125,8 @@ function yourpropfirm_connection_mt_version_custom_trader_callback() {
 function yourpropfirm_connection_trading_platforms_callback() {
     $options = get_option('yourpropfirm_connection_trading_platforms'); 
     $platforms = array(
+        'enable_mt4' => 'MT4',
+        'enable_mt5' => 'MT5',
         'enable_ctrader' => 'cTrader',
         'enable_dx_trade' => 'DX Trade',
         'enable_match_trader' => 'Match Trader',
