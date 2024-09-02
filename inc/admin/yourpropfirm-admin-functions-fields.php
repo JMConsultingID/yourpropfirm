@@ -39,6 +39,7 @@ function yourpropfirm_connection_settings_fields() {
     add_settings_field('yourpropfirm_connection_enable_mt_ctrader', 'Enable Ctrader', 'yourpropfirm_connection_enable_mt_ctrader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_custom_trader', 'Enable Custom MT', 'yourpropfirm_connection_mt_version_custom_trader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
+    add_settings_field('yourpropfirm_connection_mt_version_custom_trader_group', 'Enable Trading Platforms', 'yourpropfirm_connection_mt_version_custom_trader_group_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
@@ -117,6 +118,15 @@ function yourpropfirm_connection_mt_version_custom_trader_callback() {
     echo '<option value="enable"' . selected($option, 'enable', false) . '>Enable</option>';
     echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
     echo '</select>';
+}
+
+// Callback untuk membuat checkbox
+function yourpropfirm_connection_mt_version_custom_trader_group_callback($args) {
+    $option_name = $args['option_name'];
+    $option_key = $args['option_key'];
+    $options = get_option($option_name);
+    $checked = isset($options[$option_key]) ? 'checked' : '';
+    echo '<input type="checkbox" id="' . esc_attr($option_key) . '" name="' . esc_attr($option_name) . '[' . esc_attr($option_key) . ']" value="1" ' . $checked . ' />';
 }
 
 
