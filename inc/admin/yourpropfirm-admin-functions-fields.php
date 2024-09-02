@@ -23,6 +23,7 @@ function yourpropfirm_connection_settings_fields() {
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_custom_trader', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_trading_platforms',  array('sanitize_callback' => 'yourpropfirm_connection_sanitize_checkbox_array', 'default' => array()));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_addon', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
@@ -39,7 +40,7 @@ function yourpropfirm_connection_settings_fields() {
     add_settings_field('yourpropfirm_connection_enable_mt_ctrader', 'Enable Ctrader', 'yourpropfirm_connection_enable_mt_ctrader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_custom_trader', 'Enable Custom MT', 'yourpropfirm_connection_mt_version_custom_trader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
-    add_settings_field('yourpropfirm_connection_mt_version_custom_trader_group', 'Enable Trading Platforms', 'yourpropfirm_connection_mt_version_custom_trader_group_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
+    add_settings_field('yourpropfirm_connection_trading_platforms', 'Enable Trading Platforms', 'yourpropfirm_connection_trading_platformss_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
@@ -120,13 +121,20 @@ function yourpropfirm_connection_mt_version_custom_trader_callback() {
     echo '</select>';
 }
 
-// Callback untuk membuat checkbox
-function yourpropfirm_connection_mt_version_custom_trader_group_callback($args) {
-    $option_name = $args['option_name'];
-    $option_key = $args['option_key'];
-    $options = get_option($option_name);
-    $checked = isset($options[$option_key]) ? 'checked' : '';
-    echo '<input type="checkbox" id="' . esc_attr($option_key) . '" name="' . esc_attr($option_name) . '[' . esc_attr($option_key) . ']" value="1" ' . $checked . ' />';
+// Render enable Custom Platform
+function yourpropfirm_connection_trading_platforms_callback() {
+    $options = get_option('yourpropfirm_connection_trading_platforms'); 
+    $platforms = array(
+        'enable_ctrader' => 'cTrader',
+        'enable_dx_trade' => 'DX Trade',
+        'enable_match_trader' => 'Match Trader',
+        'enable_tradelocker' => 'TradeLocker'
+    );
+
+    foreach ($platforms as $key => $label) {
+        $checked = isset($options[$key]) ? 'checked' : '';
+        echo '<label><input type="checkbox" name="yourpropfirm_connection_trading_platforms[' . esc_attr($key) . ']" value="1" ' . esc_attr($checked) . '> ' . esc_html($label) . '</label><br>';
+    }
 }
 
 
@@ -170,5 +178,14 @@ function yourpropfirm_connection_enable_response_header_callback() {
     $option = get_option('yourpropfirm_connection_enable_response_header');
     echo '<label><input type="radio" name="yourpropfirm_connection_enable_response_header" value="1"' . checked($option, 1, false) . '> Yes</label>';
     echo '<label><input type="radio" name="yourpropfirm_connection_enable_response_header" value="0"' . checked($option, 0, false) . '> No</label>';
+}
+function yourpropfirm_connection_sanitize_checkbox_array($input) {
+    $output = array();
+    if (is_array($input)) {
+        foreach ($input as $key => $value) {
+            $output[$key] = sanitize_text_field($value);
+        }
+    }
+    return $output;
 }
 ?>
