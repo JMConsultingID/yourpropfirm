@@ -31,6 +31,9 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         if (!empty($trading_platforms_options['enable_ctrader'])) {
             $options['CTrader'] = __('cTrader', 'yourpropfirm');
         }
+        if (!empty($trading_platforms_options['enable_sirix'])) {
+            $options['Sirix'] = __('Sirix', 'yourpropfirm');
+        }
         if (!empty($trading_platforms_options['enable_dx_trade'])) {
             $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
         }

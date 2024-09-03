@@ -109,6 +109,7 @@ function yourpropfirm_connection_default_mt_version_field_callback() {
     echo '<option value="MT4"' . selected($option, 'MT4', false) . '>MT4 Version</option>';
     echo '<option value="MT5"' . selected($option, 'MT5', false) . '>MT5 Version</option>';
     echo '<option value="CTrader"' . selected($option, 'CTrader', false) . '>CTrader</option>';
+    echo '<option value="Sirix"' . selected($option, 'Sirix', false) . '>Sirix</option>';
     echo '<option value="DXTrade"' . selected($option, 'DXTrade', false) . '>DX Trade</option>';
     echo '<option value="matchTrader"' . selected($option, 'matchTrader', false) . '>Match Trader</option>';
     echo '<option value="tradeLocker"' . selected($option, 'tradeLocker', false) . '>TradeLocker</option>';
