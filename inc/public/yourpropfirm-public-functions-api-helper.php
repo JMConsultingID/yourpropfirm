@@ -23,9 +23,7 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
 
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $api_data_account['addOns'] = array(
-            'profitSplit' => intval($profitSplit),
-            'withdrawActiveDays' => intval($withdrawActiveDays),
-            'withdrawTradingDays' => intval($withdrawTradingDays)
+            'profitSplit' => intval($profitSplit)
         );
     }
 
@@ -69,9 +67,7 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $data['addOns'] = array(
-            'profitSplit' => intval($profitSplit),
-            'withdrawActiveDays' => intval($withdrawActiveDays),
-            'withdrawTradingDays' => intval($withdrawTradingDays)
+            'profitSplit' => intval($profitSplit)
         );
     }
 
@@ -130,8 +126,6 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $combined_notes .= "addOns:\n";
         $combined_notes .= "- profitSplit: " . $profitSplit . "\n";
-        $combined_notes .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
-        $combined_notes .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
 
     $combined_notes .= "Response: " . $api_response_note . "\n";
@@ -153,8 +147,6 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $combined_note_logs .= "addOns:\n";
         $combined_note_logs .= "- profitSplit: " . $profitSplit . "\n";
-        $combined_note_logs .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
-        $combined_note_logs .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
 
 
