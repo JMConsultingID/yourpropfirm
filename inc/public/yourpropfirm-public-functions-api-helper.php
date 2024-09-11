@@ -67,7 +67,6 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'ProductId' => $productsIdStr
     );
 
-    // Tambahkan addOns jika salah satu dari parameter tidak bernilai 0 atau '0'
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $data['addOns'] = array(
             'profitSplit' => $profitSplit,
