@@ -21,12 +21,22 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         'ProductId' => $productsIdStr
     );
 
-    if (intval($profitSplit) !== 0 || intval($withdrawActiveDays) !== 0 || intval($withdrawTradingDays) !== 0) {
-        $api_data_account['addOns'] = array(
-            'profitSplit' => intval($profitSplit),
-            'withdrawActiveDays' => intval($withdrawActiveDays),
-            'withdrawTradingDays' => intval($withdrawTradingDays)
-        );
+    $addOns = array();
+    
+    if ($profitSplit !== 0 && $profitSplit !== '0') {
+        $addOns['profitSplit'] = intval($profitSplit);
+    }
+
+    if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
+        $addOns['withdrawActiveDays'] = intval($withdrawActiveDays);
+    }
+
+    if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+        $addOns['withdrawTradingDays'] = intval($withdrawTradingDays);
+    }
+
+    if (!empty($addOns)) {
+        $api_data_account['addOns'] = $addOns;
     }
 
     $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
@@ -67,15 +77,30 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'ProductId' => $productsIdStr
     );
 
-    if (intval($profitSplit) !== 0 || intval($withdrawActiveDays) !== 0 || intval($withdrawTradingDays) !== 0) {
-        $data['addOns'] = array(
-            'profitSplit' => intval($profitSplit),
-            'withdrawActiveDays' => intval($withdrawActiveDays),
-            'withdrawTradingDays' => intval($withdrawTradingDays)
-        );
+    $addOns = array();
+
+    if ($profitSplit !== 0 && $profitSplit !== '0') {
+        $addOns['profitSplit'] = intval($profitSplit);
+    }
+
+    if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
+        $addOns['withdrawActiveDays'] = intval($withdrawActiveDays);
+    }
+
+    if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+        $addOns['withdrawTradingDays'] = intval($withdrawTradingDays);
+    }
+
+    if (!empty($addOns)) {
+        $data['addOns'] = $addOns;
+    } else {
+        if (isset($data['addOns'])) {
+            unset($data['addOns']);
+        }
     }
 
     return $data;
+
 }
 
 
