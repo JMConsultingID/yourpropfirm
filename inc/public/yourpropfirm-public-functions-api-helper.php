@@ -23,9 +23,9 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
 
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $api_data_account['addOns'] = array(
-            'profitSplit' => $profitSplit,
-            'withdrawActiveDays' => $withdrawActiveDays,
-            'withdrawTradingDays' => $withdrawTradingDays
+            'profitSplit' => intval($profitSplit),
+            'withdrawActiveDays' => intval($withdrawActiveDays),
+            'withdrawTradingDays' => intval($withdrawTradingDays)
         );
     }
 
@@ -69,9 +69,9 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 
     if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
         $data['addOns'] = array(
-            'profitSplit' => $profitSplit,
-            'withdrawActiveDays' => $withdrawActiveDays,
-            'withdrawTradingDays' => $withdrawTradingDays
+            'profitSplit' => intval($profitSplit),
+            'withdrawActiveDays' => intval($withdrawActiveDays),
+            'withdrawTradingDays' => intval($withdrawTradingDays)
         );
     }
 
