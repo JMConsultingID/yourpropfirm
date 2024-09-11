@@ -21,16 +21,12 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         'ProductId' => $productsIdStr
     );
 
-    if ($profitSplit !== 0 && $profitSplit !== '0') {
-        $api_data_account['profitSplit'] = $profitSplit;
-    }
-
-    if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
-        $api_data_account['withdrawActiveDays'] = $withdrawActiveDays;
-    }
-
-    if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
-        $api_data_account['withdrawTradingDays'] = $withdrawTradingDays;
+    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
+        $api_data_account['addOns'] = array(
+            'profitSplit' => $profitSplit,
+            'withdrawActiveDays' => $withdrawActiveDays,
+            'withdrawTradingDays' => $withdrawTradingDays
+        );
     }
 
     $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
@@ -71,20 +67,18 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'ProductId' => $productsIdStr
     );
 
-    if ($profitSplit !== 0 && $profitSplit !== '0') {
-        $data['profitSplit'] = $profitSplit;
-    }
-
-    if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
-        $data['withdrawActiveDays'] = $withdrawActiveDays;
-    }
-
-    if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
-        $data['withdrawTradingDays'] = $withdrawTradingDays;
+    // Tambahkan addOns jika salah satu dari parameter tidak bernilai 0 atau '0'
+    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
+        $data['addOns'] = array(
+            'profitSplit' => $profitSplit,
+            'withdrawActiveDays' => $withdrawActiveDays,
+            'withdrawTradingDays' => $withdrawTradingDays
+        );
     }
 
     return $data;
 }
+
 
 function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
@@ -133,15 +127,14 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "YPF User ID : " . $user_id . "\n";       
     $combined_notes .= "ProgramID: " . $program_id_value . "\n";
     $combined_notes .= "MTVersion: " . $mt_version_value . "\n";
-    if (($profitSplit !== 0 && $profitSplit !== '0') && !empty($profitSplit)) {
-        $combined_notes .= "profitSplit: " . $profitSplit . "\n";
+    // Adding the addOns in the note if applicable
+    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
+        $combined_notes .= "addOns:\n";
+        $combined_notes .= "- profitSplit: " . $profitSplit . "\n";
+        $combined_notes .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
+        $combined_notes .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
-    if (($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') && !empty($withdrawActiveDays)) {
-        $combined_notes .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
-    }
-    if (($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') && !empty($withdrawTradingDays)) {
-        $combined_notes .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
-    }
+
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
 
@@ -157,14 +150,12 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_note_logs .= "YPF User ID : " . $user_id . "\n";         
     $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
     $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
-    if (($profitSplit !== 0 && $profitSplit !== '0') && !empty($profitSplit)) {
-        $combined_note_logs .= "profitSplit: " . $profitSplit . "\n";
-    }
-    if (($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') && !empty($withdrawActiveDays)) {
-        $combined_note_logs .= "withdrawActiveDays: " . $withdrawActiveDays . "\n";
-    }
-    if (($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') && !empty($withdrawTradingDays)) {
-        $combined_note_logs .= "withdrawTradingDays: " . $withdrawTradingDays . "\n";
+    // Adding the addOns in the logs if applicable
+    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
+        $combined_note_logs .= "addOns:\n";
+        $combined_note_logs .= "- profitSplit: " . $profitSplit . "\n";
+        $combined_note_logs .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
+        $combined_note_logs .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
     }
 
 
