@@ -48,12 +48,11 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
 
-function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
+function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
     $invoicesId = $order->get_id();
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
-    $site_language = get_locale();
     $user_email = $order->get_billing_email();
     $user_first_name = $order->get_billing_first_name();
     $user_last_name = $order->get_billing_last_name();
@@ -74,7 +73,7 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'zipCode' => $user_zip_code,
         'country' => $user_country,
         'phone' => $user_phone,
-        'language' => $site_language,
+        'language' => $site_language_value,
         'currency' => $order_currency,
         'income' => $order_total,
         'invoiceId' => $invoicesIdStr,
@@ -108,9 +107,10 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 }
 
 
-function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
+    $site_language = get_locale();
     
     // Check if WooCommerce is active and the function exists
     if (function_exists('get_woocommerce_currency')) {
@@ -146,51 +146,78 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
 
     // Combine all API responses into one note
     $combined_notes = "--YourPropfirm--\n";
-    $combined_notes .= "Response Loop : " . $products_loop_id . "\n";
-    $combined_notes .= "InvoiceId : " . $order_id . "\n";  
-    $combined_notes .= "ProductId : " . $product_woo_id . "\n"; 
-    $combined_notes .= "Quantity : " . $quantity . "\n";
-    $combined_notes .= "Currency : " . $order_currency . "\n";
-    $combined_notes .= "Order Total : " . $order_total . "\n";
-    $combined_notes .= "HTTP Response : " . $http_status . "\n";
-    $combined_notes .= "YPF User ID : " . $user_id . "\n";       
+    $combined_notes .= "Response Loop: " . $products_loop_id . "\n";
+    $combined_notes .= "InvoiceId: " . $order_id . "\n";  
+    $combined_notes .= "ProductId: " . $product_woo_id . "\n"; 
+    $combined_notes .= "Quantity: " . $quantity . "\n";
+    $combined_notes .= "Language: " . $site_language_value . "\n";
+    $combined_notes .= "Currency: " . $order_currency . "\n";
+    $combined_notes .= "Order Total: " . $order_total . "\n";
+    $combined_notes .= "HTTP Response: " . $http_status . "\n";
+    $combined_notes .= "YPF User ID: " . $user_id . "\n";       
     $combined_notes .= "ProgramID: " . $program_id_value . "\n";
     $combined_notes .= "MTVersion: " . $mt_version_value . "\n";
+
     // Adding the addOns in the note if applicable
-    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
+    if ($profitSplit !== 0 && $profitSplit !== '0' || 
+        $withdrawActiveDays !== 0 && $withdrawActiveDays !== '0' || 
+        $withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+        
         $combined_notes .= "addOns:\n";
-        $combined_notes .= "- profitSplit: " . $profitSplit . "\n";
-        $combined_notes .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
-        $combined_notes .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
+        
+        if ($profitSplit !== 0 && $profitSplit !== '0') {
+            $combined_notes .= "- profitSplit: " . $profitSplit . "\n";
+        }
+        
+        if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
+            $combined_notes .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
+        }
+        
+        if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+            $combined_notes .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
+        }
     }
 
     $combined_notes .= "Response: " . $api_response_note . "\n";
     $combined_notes .= "--End Response--\n";
 
-    // Combine all API responses For Log WC-Logger
+
+    // Combine all API responses for Log WC-Logger
     $combined_note_logs = "\n";
     $combined_note_logs .= "--Begin YPF Response--\n";
-    $combined_note_logs .= "Response Loop : " . $products_loop_id . "\n";
-    $combined_note_logs .= "InvoiceId : " . $order_id . "\n";  
-    $combined_note_logs .= "ProductId : " . $product_woo_id . "\n"; 
-    $combined_note_logs .= "Quantity : " . $quantity . "\n";
-    $combined_note_logs .= "Currency : " . $order_currency . "\n";
-    $combined_note_logs .= "Order Total : " . $order_total . "\n";
-    $combined_note_logs .= "HTTP Response : " . $http_status . "\n";
-    $combined_note_logs .= "YPF User ID : " . $user_id . "\n";         
-    $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
-    $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
-    // Adding the addOns in the logs if applicable
-    if ($profitSplit !== 0 || $withdrawActiveDays !== 0 || $withdrawTradingDays !== 0) {
-        $combined_note_logs .= "addOns:\n";
-        $combined_note_logs .= "- profitSplit: " . $profitSplit . "\n";
-        $combined_note_logs .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
-        $combined_note_logs .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
-    }
+    $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
+    // $combined_note_logs .= "InvoiceId: " . $order_id . "\n";  
+    // $combined_note_logs .= "ProductId: " . $product_woo_id . "\n"; 
+    // $combined_note_logs .= "Quantity: " . $quantity . "\n";
+    // $combined_note_logs .= "Currency: " . $order_currency . "\n";
+    // $combined_note_logs .= "Order Total: " . $order_total . "\n";
+    // $combined_note_logs .= "HTTP Response: " . $http_status . "\n";
+    // $combined_note_logs .= "YPF User ID: " . $user_id . "\n";         
+    // $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
+    // $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
 
+    // if ($profitSplit !== 0 && $profitSplit !== '0' || 
+    //     $withdrawActiveDays !== 0 && $withdrawActiveDays !== '0' || 
+    //     $withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+        
+    //     $combined_note_logs .= "addOns:\n";
+        
+    //     if ($profitSplit !== 0 && $profitSplit !== '0') {
+    //         $combined_note_logs .= "- profitSplit: " . $profitSplit . "\n";
+    //     }
+        
+    //     if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
+    //         $combined_note_logs .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
+    //     }
+        
+    //     if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+    //         $combined_note_logs .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
+    //     }
+    // }
 
     $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
+
 
     // Add the combined note
     wc_create_order_note($order_id, $combined_notes, $added_by_user = false, $customer_note = false);
