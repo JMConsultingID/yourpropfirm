@@ -48,11 +48,12 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
 
-function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
+function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
     $invoicesId = $order->get_id();
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
+    $site_language = get_locale();
     $user_email = $order->get_billing_email();
     $user_first_name = $order->get_billing_first_name();
     $user_last_name = $order->get_billing_last_name();
@@ -73,8 +74,11 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'zipCode' => $user_zip_code,
         'country' => $user_country,
         'phone' => $user_phone,
-        'InvoiceId' => $invoicesIdStr,
-        'ProductId' => $productsIdStr
+        'language' => $site_language,
+        'currency' => $order_currency,
+        'income' => $order_total,
+        'invoiceId' => $invoicesIdStr,
+        'productId' => $productsIdStr
     );
 
     $addOns = array();
@@ -104,7 +108,7 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 }
 
 
-function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
     
@@ -146,7 +150,8 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "InvoiceId : " . $order_id . "\n";  
     $combined_notes .= "ProductId : " . $product_woo_id . "\n"; 
     $combined_notes .= "Quantity : " . $quantity . "\n";
-    $combined_notes .= "Currency : " . $order_currency_value . "\n";
+    $combined_notes .= "Currency : " . $order_currency . "\n";
+    $combined_notes .= "Order Total : " . $order_total . "\n";
     $combined_notes .= "HTTP Response : " . $http_status . "\n";
     $combined_notes .= "YPF User ID : " . $user_id . "\n";       
     $combined_notes .= "ProgramID: " . $program_id_value . "\n";
@@ -169,7 +174,8 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_note_logs .= "InvoiceId : " . $order_id . "\n";  
     $combined_note_logs .= "ProductId : " . $product_woo_id . "\n"; 
     $combined_note_logs .= "Quantity : " . $quantity . "\n";
-    $combined_note_logs .= "Currency : " . $order_currency_value . "\n";
+    $combined_note_logs .= "Currency : " . $order_currency . "\n";
+    $combined_note_logs .= "Order Total : " . $order_total . "\n";
     $combined_note_logs .= "HTTP Response : " . $http_status . "\n";
     $combined_note_logs .= "YPF User ID : " . $user_id . "\n";         
     $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";

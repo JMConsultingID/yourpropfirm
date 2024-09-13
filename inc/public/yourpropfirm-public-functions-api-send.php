@@ -52,7 +52,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
             // Retrieve the mt_version_value, use default if not set or empty
             $mt_version_value = $order->get_meta('_yourpropfirm_mt_version') ?: $default_mt;
-
+            $order_currency = $order->get_currency();
+            $order_total = $order->get_total();
+            
             // Retrieve the profitSplit, use default if not set or empty
             $profitSplit = $order->get_meta('profitSplit');
             $withdrawActiveDays = $order->get_meta('withdrawActiveDays');
@@ -75,7 +77,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
-                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
                     $http_status = $response['http_status'];
                     $api_response = $response['api_response'];
@@ -93,7 +95,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $combined_note_hit_logs .= "--End Log--\n";
                     $log_data['logger']->info($combined_note_hit_logs,  $log_data['context']);
 
-                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value,  $order_currency, $order_total, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 
                     // Loop through the quantity of the first product
                     if ($user_id && $quantity > 1) {
