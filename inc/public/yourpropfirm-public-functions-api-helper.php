@@ -215,7 +215,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     //     }
     // }
 
-    $combined_note_logs .= "APIResponse: " . $api_response_logs . "\n";
+    $combined_note_logs .= "YPF API Response: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
 
 
