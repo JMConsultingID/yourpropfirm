@@ -53,7 +53,6 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
-    $order_total_value = number_format(floatval($order_total), 2, '.', ''); 
     $user_email = $order->get_billing_email();
     $user_first_name = $order->get_billing_first_name();
     $user_last_name = $order->get_billing_last_name();
@@ -76,7 +75,7 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => $order_total_value,
+        'income' => $order_total,
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
