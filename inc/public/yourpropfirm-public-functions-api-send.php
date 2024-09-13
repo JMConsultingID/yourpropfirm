@@ -51,7 +51,8 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $default_TradingDays =  0;
 
             // Retrieve the mt_version_value, use default if not set or empty
-            $mt_version_value = $order->get_meta('_yourpropfirm_mt_version') ?: $default_mt;
+            $mt_version_value = get_post_meta( $order_id, '_yourpropfirm_mt_version', true ) ?: $default_mt;
+
             $order_currency = $order->get_currency();
             $order_total = $order->get_total();
             
