@@ -61,7 +61,6 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    // Ensure income has exactly 2 decimal places
     $order_total_value = sprintf("%.2f", (float)$order_total);
 
     $data = array(
@@ -121,7 +120,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    $order_total_round = round((float)$order_total, 2);
+    $order_total_value = sprintf("%.2f", (float)$order_total);
 
     // Prepare the main data array
     $data = array(
@@ -134,7 +133,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
         'invoiceId' => $invoiceIdStr,
         'productId' => strval($productId),
         'currency' => $order_currency,
-        'income' => $order_total_round,
+        'income' => (float)$order_total_value, 
         'attributes' => array(  // Attributes like address, city, country, etc.
             'addressLine' => $user_address,
             'city' => $user_city,
