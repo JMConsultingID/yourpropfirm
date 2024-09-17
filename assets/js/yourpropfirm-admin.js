@@ -42,14 +42,14 @@
             var selectionType = $('#_yourpropfirm_selection_type').val();
 
             if (selectionType === 'challenge') {
-                $('#_yourpropfirm_program_id').show();
-                $('#_yourpropfirm_competition_id').hide();
+                $('._yourpropfirm_program_id').show();
+                $('._yourpropfirm_competition_id').hide();
             } else if (selectionType === 'competition') {
-                $('#_yourpropfirm_program_id').hide();
-                $('#_yourpropfirm_competition_id').show();
+                $('._yourpropfirm_program_id').hide();
+                $('._yourpropfirm_competition_id').show();
             } else {
-                $('#_yourpropfirm_program_id').hide();
-                $('#_yourpropfirm_competition_id').hide();
+                $('._yourpropfirm_program_id_field').hide();
+                $('._yourpropfirm_competition_id_field').hide();
             }
         }
 
