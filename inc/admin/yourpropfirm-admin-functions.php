@@ -17,7 +17,7 @@ function yourpropfirm_add_menus() {
         'YPF Settings', // Page title
         'YPF Dashboard', // Menu title
         'manage_options', // Capability
-        'yourpropfirm_dashboard_general', // Menu slug
+        'yourpropfirm_dashboard', // Menu slug
         'yourpropfirm_dashboard_general_page', // Function to display the page content
         'dashicons-screenoptions', // Icon URL
         3 // Position
