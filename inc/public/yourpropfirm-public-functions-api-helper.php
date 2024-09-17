@@ -61,7 +61,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    $order_total_value = sprintf("%.2f", (float)$order_total);
+    $order_total_value = (float)round($order_total, 2);
 
     $data = array(
         'email' => $user_email,
@@ -76,7 +76,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => (float)$order_total_value, 
+        'income' => $order_total_value, 
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
@@ -120,7 +120,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    $order_total_value = sprintf("%.2f", (float)$order_total);
+    $order_total_value = (float)round($order_total, 2);
 
     // Prepare the main data array
     $data = array(
@@ -133,7 +133,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
         'invoiceId' => $invoiceIdStr,
         'productId' => strval($productId),
         'currency' => $order_currency,
-        'income' => (float)$order_total_value, 
+        'income' =>  $order_total_value, 
         'attributes' => array(  // Attributes like address, city, country, etc.
             'addressLine' => $user_address,
             'city' => $user_city,
