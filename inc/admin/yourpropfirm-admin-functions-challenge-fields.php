@@ -21,7 +21,7 @@ function yourpropfirm_connection_challenge_settings_fields() {
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_enable_addon', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
 
-    add_settings_section('yourpropfirm_connection_challenge', 'General Settings', 'yourpropfirm_connection__challenge_section_callback', 'yourpropfirm_connection_challenge_settings');
+    add_settings_section('yourpropfirm_connection_challenge', 'General Settings', 'yourpropfirm_connection_challenge_section_callback', 'yourpropfirm_connection_challenge_settings');
 
    
     add_settings_field('yourpropfirm_connection_trading_platforms', 'Enable Trading Platforms', 'yourpropfirm_connection_trading_platforms_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
@@ -35,7 +35,7 @@ function yourpropfirm_connection_challenge_settings_fields() {
 
 
 // Render section callback
-function yourpropfirm_connection_general_section_callback() {
+function yourpropfirm_connection_challenge_section_callback() {
     echo '<p>Configure The Challenge Settings for YourPropFirm plugin.</p>';
 }
 
