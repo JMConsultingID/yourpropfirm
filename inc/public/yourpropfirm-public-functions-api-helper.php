@@ -77,7 +77,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => (float)$order_total_rounded, 
+        'income' => round((float)$order_total_rounded , 2),
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
@@ -135,7 +135,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
         'invoiceId' => $invoiceIdStr,
         'productId' => strval($productId),
         'currency' => $order_currency,
-        'income' => (float)$order_total_rounded,
+        'income' => round((float)$order_total_rounded , 2),
         'attributes' => array(  // Attributes like address, city, country, etc.
             'addressLine' => $user_address,
             'city' => $user_city,
