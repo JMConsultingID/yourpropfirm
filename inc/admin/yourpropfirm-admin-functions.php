@@ -14,7 +14,7 @@ add_action('admin_menu', 'yourpropfirm_add_menus');
 function yourpropfirm_add_menus() {
     // Main menu
     add_menu_page(
-        'YPF Dashboard', // Page title
+        'YPF Settings', // Page title
         'YPF Dashboard', // Menu title
         'manage_options', // Capability
         'yourpropfirm_dashboard', // Menu slug
@@ -29,8 +29,8 @@ function yourpropfirm_add_menus() {
         'YPF Challenge', // Page title
         'YPF Challenge', // Menu title
         'manage_options', // Capability
-        'yourpropfirm_settings', // Menu slug
-        'yourpropfirm_settings_page' // Function to display the page content
+        'yourpropfirm_challenge_settings', // Menu slug
+        'yourpropfirm_challenge_settings_page' // Function to display the page content
     );
 
     // Sub-menu: Addons
@@ -39,8 +39,8 @@ function yourpropfirm_add_menus() {
         'YPF Competition', // Page title
         'YPF Competition', // Menu title
         'manage_options', // Capability
-        'yourpropfirm_addons', // Menu slug
-        'yourpropfirm_addons_page' // Function to display the page content
+        'yourpropfirm_competition_settings', // Menu slug
+        'yourpropfirm_competition_settings_page' // Function to display the page content
     );
 }
 
@@ -50,7 +50,7 @@ function yourpropfirm_dashboard_page() {
 }
 
 // Function to display the settings page content
-function yourpropfirm_settings_page() {
+function yourpropfirm_challenge_settings_page() {
     echo '<div class="wrap"><h1>Settings</h1>';
     echo '<form method="post" action="options.php">';
     settings_fields('yourpropfirm_connection_settings');
@@ -60,6 +60,6 @@ function yourpropfirm_settings_page() {
 }
 
 // Function to display the addons page content
-function yourpropfirm_addons_page() {
+function yourpropfirm_competition_settings_page() {
     echo '<div class="wrap"><h1>Addons</h1><p>This section allows you to manage addons for YourPropFirm plugin.</p></div>';
 }
