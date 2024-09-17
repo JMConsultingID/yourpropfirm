@@ -13,6 +13,7 @@ require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions.php';
 require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-challenge-fields.php';
 require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-competition-fields.php';
 require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-products.php';
+require dirname(__FILE__) . '/admin/yourpropfirm-admin-functions-settings-fields.php';
 
 // Include public functions
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions.php';
