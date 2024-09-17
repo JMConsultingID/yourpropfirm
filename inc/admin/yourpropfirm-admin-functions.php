@@ -53,8 +53,8 @@ function yourpropfirm_dashboard_page() {
 function yourpropfirm_challenge_settings_page() {
     echo '<div class="wrap"><h1>Settings</h1>';
     echo '<form method="post" action="options.php">';
-    settings_fields('yourpropfirm_connection_settings');
-    do_settings_sections('yourpropfirm_connection_settings');
+    settings_fields('yourpropfirm_connection_challenge_settings');
+    do_settings_sections('yourpropfirm_connection_challenge_settings');
     submit_button();
     echo '</form></div>';
 }
