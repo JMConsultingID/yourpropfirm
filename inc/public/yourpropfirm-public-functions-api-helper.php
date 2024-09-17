@@ -168,8 +168,6 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
     return $data;
 }
 
-
-
 function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id_value, $competition_id, $products_loop_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
