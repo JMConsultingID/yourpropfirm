@@ -58,6 +58,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
             $order_currency = $order->get_currency();
             $order_total = $order->get_total();
+            $order_total_value = number_format((float)$order_total, 2, '.', ''),
             
             // Retrieve the profitSplit, use default if not set or empty
             $profitSplit = $order->get_meta('profitSplit');
@@ -99,7 +100,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $first_product = true;
                     if ($yourpropfirm_selection_type === 'challenge') {
                         // Call the challenge API data function
-                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     } elseif ($yourpropfirm_selection_type === 'competition') {
                         // Call the competition API data function
                         $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
