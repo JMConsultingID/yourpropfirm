@@ -27,16 +27,16 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     $environment = get_option('yourpropfirm_connection_environment');
     if ($environment === 'sandbox') {
         // Perform actions for Sandbox Environment
-        $endpoint_url = esc_attr(get_option('yourpropfirm_connection_sandbox_endpoint_url'));
+        $baseUrl = esc_attr(get_option('yourpropfirm_connection_sandbox_endpoint_url'));
         $api_key = esc_attr(get_option('yourpropfirm_connection_sandbox_test_key'));
     } else {
         // Perform actions for Live Environment
-        $endpoint_url = esc_attr(get_option('yourpropfirm_connection_endpoint_url'));
+        $baseUrl = esc_attr(get_option('yourpropfirm_connection_endpoint_url'));
         $api_key = esc_attr(get_option('yourpropfirm_connection_api_key'));
     }
 
     // Check if endpoint URL and API Key are provided
-    if (empty($endpoint_url) || empty($api_key)) {
+    if (empty($baseUrl) || empty($api_key)) {
         return;
     }
 
@@ -74,14 +74,40 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             // First product and quantity handling
             foreach ($order->get_items() as $item_id => $item) {
                 $product = $item->get_product();
-                $quantity = $item->get_quantity();            
+                $quantity = $item->get_quantity();
+                $yourpropfirm_selection_type = get_post_meta($product->get_id(), '_yourpropfirm_selection_type', true);         
                 $program_id = get_post_meta($product->get_id(), '_yourpropfirm_program_id', true);
+                $competition_id = get_post_meta($product->get_id(), '_yourpropfirm_competition_id', true);
                 $product_woo_id = $product->get_id();
+
+                if (empty($yourpropfirm_selection_type)) {
+                    $yourpropfirm_selection_type = 'challenge';
+                }
+
+                if ($yourpropfirm_selection_type === 'challenge') {
+                    $endpoint = "/client/v1/users";
+                } elseif ($yourpropfirm_selection_type === 'competition' && !empty($competition_id)) {
+                    $endpoint = "/client/v1/competitions/" . esc_attr($competition_id) . "/register";
+                } else {
+                    $endpoint = "/client/v1/users";
+                }
+
+                $endpoint_url = rtrim($baseUrl, '/') . '/' . ltrim($endpoint, '/');
 
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
-                    $api_data = yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    if ($yourpropfirm_selection_type === 'challenge') {
+                        // Call the challenge API data function
+                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    } elseif ($yourpropfirm_selection_type === 'competition') {
+                        // Call the competition API data function
+                        $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    } else {
+                        // Call the challenge API data function
+                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    }
+
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
                     $http_status = $response['http_status'];
                     $api_response = $response['api_response'];
@@ -93,13 +119,17 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     // Combine all API responses For Log WC-Logger
                     $combined_note_hit_logs = "\n";
                     $combined_note_hit_logs .= "--Log Send API YPF--\n";
+                    $combined_note_hit_logs .= "YPF type: " . $yourpropfirm_selection_type . "\n";
+                    if ($yourpropfirm_selection_type === 'competition') {
+                         $combined_note_hit_logs .= "CompetitionID: " . $competition_id . "\n";
+                    } 
                     $combined_note_hit_logs .= "Endpoint URL: " . $endpoint_url . "\n";
                     $combined_note_hit_logs .= "API Key: " . yourpropfirm_connection_mask_api_key($api_key) . "\n";
                     $combined_note_hit_logs .= "API Data: " . json_encode($api_data) . "\n";
                     $combined_note_hit_logs .= "--End Log--\n";
                     $log_data['logger']->info($combined_note_hit_logs,  $log_data['context']);
 
-                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version_value,  $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id, $competition_id, $products_loop_id, $mt_version_value,  $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 
                     // Loop through the quantity of the first product
                     if ($user_id && $quantity > 1) {

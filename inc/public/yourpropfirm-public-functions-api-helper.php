@@ -48,7 +48,7 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
 
-function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
+function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
     $invoicesId = $order->get_id();
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -75,7 +75,7 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => $order_total,
+        'income' => number_format((float)$order_total, 2, '.', ''),
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
@@ -106,8 +106,71 @@ function yourpropfirm_get_api_data($order, $order_id, $product_woo_id, $program_
 
 }
 
+function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
+    // Get order and user data
+    $invoiceId = $order->get_id();  // Invoice ID
+    $productId = $product_woo_id;   // Product ID
+    $invoiceIdStr = strval($invoiceId);
+    $user_email = $order->get_billing_email();
+    $user_first_name = $order->get_billing_first_name();
+    $user_last_name = $order->get_billing_last_name();
+    $user_address = $order->get_billing_address_1();
+    $user_city = $order->get_billing_city();
+    $user_zip_code = $order->get_billing_postcode();
+    $user_country = $order->get_billing_country();
+    $user_phone = $order->get_billing_phone();
 
-function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id_value, $products_loop_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+    // Prepare the main data array
+    $data = array(
+        'email' => $user_email,
+        'firstname' => $user_first_name,
+        'lastname' => $user_last_name,
+        'roleIds' => array('Challenge'),  // Only "Challenge" role users can join competition
+        'language' => $site_language_value,
+        'mtVersion' => $mt_version_value,
+        'invoiceId' => $invoiceIdStr,
+        'productId' => strval($productId),
+        'currency' => $order_currency,
+        'income' => number_format((float)$order_total, 2, '.', ''),
+        'attributes' => array(  // Attributes like address, city, country, etc.
+            'addressLine' => $user_address,
+            'city' => $user_city,
+            'country' => $user_country,
+            'phone' => $user_phone,
+            'zipCode' => $user_zip_code
+        )
+    );
+
+    // Initialize addOns array
+    $addOns = array();
+
+    // Add profitSplit if it is not 0 or '0'
+    if ($profitSplit !== 0 && $profitSplit !== '0') {
+        $addOns['profitSplit'] = floatval($profitSplit);
+    }
+
+    // Add withdrawActiveDays if it is not 0 or '0'
+    if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
+        $addOns['withdrawActiveDays'] = intval($withdrawActiveDays);
+    }
+
+    // Add withdrawTradingDays if it is not 0 or '0'
+    if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
+        $addOns['withdrawTradingDays'] = intval($withdrawTradingDays);
+    }
+
+    // Only add addOns to the main data array if it's not empty
+    if (!empty($addOns)) {
+        $data['addOns'] = $addOns;
+    }
+
+    // Return the final data array
+    return $data;
+}
+
+
+
+function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id_value, $competition_id, $products_loop_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
     $log_data = yourpropfirm_connection_response_logger();
     $site_language = get_locale();
@@ -126,7 +189,11 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Get the currency from the order
     $order_currency_value = $order->get_currency();
 
-    $enable_response_header = get_option('yourpropfirm_connection_enable_response_header');    
+    $enable_response_header = get_option('yourpropfirm_connection_enable_response_header'); 
+
+    if (empty($yourpropfirm_selection_type)) {
+        $yourpropfirm_selection_type = 'challenge';
+    }
 
     $error_message = 'An error occurred while creating the user. Error Type Unknown.';
     if ($http_status == 201) {
@@ -154,8 +221,17 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     $combined_notes .= "Currency: " . $order_currency . "\n";
     $combined_notes .= "Order Total: " . $order_total . "\n";
     $combined_notes .= "HTTP Response: " . $http_status . "\n";
-    $combined_notes .= "YPF User ID: " . $user_id . "\n";       
-    $combined_notes .= "ProgramID: " . $program_id_value . "\n";
+    if ($yourpropfirm_selection_type === 'challenge') {
+        // Append ProgramID to notes if the selection type is 'challenge'
+        $combined_notes .= "YPF User ID: " . $user_id . "\n";
+    }     
+    if ($yourpropfirm_selection_type === 'challenge') {
+        // Append ProgramID to notes if the selection type is 'challenge'
+        $combined_notes .= "ProgramID: " . $program_id_value . "\n";
+    } elseif ($yourpropfirm_selection_type === 'competition') {
+        // Append CompetitionID to notes if the selection type is 'competition'
+        $combined_notes .= "CompetitionID: " . $competition_id . "\n";
+    }
     $combined_notes .= "MTVersion: " . $mt_version_value . "\n";
 
     // Adding the addOns in the note if applicable
