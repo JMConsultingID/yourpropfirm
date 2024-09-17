@@ -17,8 +17,8 @@ function yourpropfirm_add_menus() {
         'YPF Settings', // Page title
         'YPF Dashboard', // Menu title
         'manage_options', // Capability
-        'yourpropfirm_dashboard', // Menu slug
-        'yourpropfirm_dashboard_page', // Function to display the page content
+        'yourpropfirm_dashboard_general', // Menu slug
+        'yourpropfirm_dashboard_general_page', // Function to display the page content
         'dashicons-screenoptions', // Icon URL
         3 // Position
     );
@@ -45,8 +45,13 @@ function yourpropfirm_add_menus() {
 }
 
 // Function to display the main dashboard page content
-function yourpropfirm_dashboard_page() {
+function yourpropfirm_dashboard_general_page() {
     echo '<div class="wrap"><h1>YPF Dashboard</h1><p>Welcome to the YPF Dashboard.</p></div>';
+    echo '<form method="post" action="options.php">';
+    settings_fields('yourpropfirm_connection_general_settings');
+    do_settings_sections('yourpropfirm_connection_general_settings');
+    submit_button();
+    echo '</form></div>';
 }
 
 // Function to display the settings page content
