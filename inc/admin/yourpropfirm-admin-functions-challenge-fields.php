@@ -18,7 +18,6 @@ function yourpropfirm_connection_challenge_settings_fields() {
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
-    register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_enable_addon', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
 
     add_settings_section('yourpropfirm_connection_challenge', 'General Settings', 'yourpropfirm_connection_challenge_section_callback', 'yourpropfirm_connection_challenge_settings');
@@ -29,7 +28,6 @@ function yourpropfirm_connection_challenge_settings_fields() {
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
     add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
-    add_settings_field('yourpropfirm_connection_enable_addon', 'Enable YPF Addons', 'yourpropfirm_connection_enable_addon_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
     add_settings_field('yourpropfirm_connection_enable_response_header', 'Save Log Response', 'yourpropfirm_connection_enable_response_header_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
 }
 
@@ -99,13 +97,6 @@ function yourpropfirm_connection_request_delay_callback() {
         echo '<option value="' . $i . '"' . selected($option, (string)$i, false) . '>' . $i . '</option>';
     }
     echo '</select>';
-}
-
-// Render environment field
-function yourpropfirm_connection_enable_addon_callback() {
-    $option = get_option('yourpropfirm_connection_enable_addon');
-    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="1"' . checked($option, '1', false) . '>Yes </label>';
-    echo '<label><input type="radio" name="yourpropfirm_connection_enable_addon" value="0"' . checked($option, '0', false) . '>No </label>';
 }
 
 // Render enable response header field
