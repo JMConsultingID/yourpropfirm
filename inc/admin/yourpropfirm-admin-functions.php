@@ -26,8 +26,8 @@ function yourpropfirm_add_menus() {
     // Sub-menu: Settings
     add_submenu_page(
         'yourpropfirm_dashboard', // Parent slug
-        'Settings', // Page title
-        'Settings', // Menu title
+        'YPF Challenge', // Page title
+        'YPF Challenge', // Menu title
         'manage_options', // Capability
         'yourpropfirm_settings', // Menu slug
         'yourpropfirm_settings_page' // Function to display the page content
@@ -36,8 +36,8 @@ function yourpropfirm_add_menus() {
     // Sub-menu: Addons
     add_submenu_page(
         'yourpropfirm_dashboard', // Parent slug
-        'Addons', // Page title
-        'Addons', // Menu title
+        'YPF Competition', // Page title
+        'YPF Competition', // Menu title
         'manage_options', // Capability
         'yourpropfirm_addons', // Menu slug
         'yourpropfirm_addons_page' // Function to display the page content

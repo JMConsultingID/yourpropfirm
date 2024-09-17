@@ -18,12 +18,10 @@ function yourpropfirm_connection_settings_fields() {
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_endpoint_url');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_sandbox_test_key');
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_endpoint_url');
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_api_key');
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_mt_ctrader', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_api_key');    
+    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_trading_platforms',  array('sanitize_callback' => 'yourpropfirm_connection_sanitize_checkbox_array', 'default' => array()));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_mt_version_custom_trader', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
-    register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_trading_platforms',  array('sanitize_callback' => 'yourpropfirm_connection_sanitize_checkbox_array', 'default' => array()));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
     register_setting('yourpropfirm_connection_settings', 'yourpropfirm_connection_enable_addon', array('sanitize_callback' => 'sanitize_text_field', 'default' => '0'));
@@ -37,10 +35,8 @@ function yourpropfirm_connection_settings_fields() {
     add_settings_field('yourpropfirm_connection_sandbox_test_key', 'Sandbox Test Key', 'yourpropfirm_connection_sandbox_test_key_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_endpoint_url', 'Live Endpoint URL', 'yourpropfirm_connection_endpoint_url_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_api_key', 'Live API Key', 'yourpropfirm_connection_api_key_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
-    add_settings_field('yourpropfirm_connection_enable_mt_ctrader', 'Enable Ctrader', 'yourpropfirm_connection_enable_mt_ctrader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
-    add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
-    add_settings_field('yourpropfirm_connection_mt_version_custom_trader', 'Enable Custom MT', 'yourpropfirm_connection_mt_version_custom_trader_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_trading_platforms', 'Enable Trading Platforms', 'yourpropfirm_connection_trading_platforms_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
+    add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');  
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_settings', 'yourpropfirm_connection_general');
@@ -93,38 +89,6 @@ function yourpropfirm_connection_api_key_callback() {
     echo '<input type="text" name="yourpropfirm_connection_api_key" value="' . esc_attr($option) . '" style="width: 400px;">';
 }
 
-// Render enable Ctrader field
-function yourpropfirm_connection_enable_mt_ctrader_callback() {
-    $option = get_option('yourpropfirm_connection_enable_mt_ctrader');
-    echo '<select name="yourpropfirm_connection_enable_mt_ctrader">';
-    echo '<option value="enable"' . selected($option, 'enable', false) . '>Enable</option>';
-    echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
-    echo '</select>';
-}
-
-// Render default MT version field
-function yourpropfirm_connection_default_mt_version_field_callback() {
-    $option = get_option('yourpropfirm_connection_default_mt_version_field');
-    echo '<select name="yourpropfirm_connection_default_mt_version_field">';
-    echo '<option value="MT4"' . selected($option, 'MT4', false) . '>MT4 Version</option>';
-    echo '<option value="MT5"' . selected($option, 'MT5', false) . '>MT5 Version</option>';
-    echo '<option value="CTrader"' . selected($option, 'CTrader', false) . '>CTrader</option>';
-    echo '<option value="Sirix"' . selected($option, 'Sirix', false) . '>Sirix</option>';
-    echo '<option value="DXTrade"' . selected($option, 'DXTrade', false) . '>DX Trade</option>';
-    echo '<option value="matchTrader"' . selected($option, 'matchTrader', false) . '>Match Trader</option>';
-    echo '<option value="tradeLocker"' . selected($option, 'tradeLocker', false) . '>TradeLocker</option>';
-    echo '</select>';
-}
-
-// Render enable Custom MT Version
-function yourpropfirm_connection_mt_version_custom_trader_callback() {
-    $option = get_option('yourpropfirm_connection_mt_version_custom_trader');
-    echo '<select name="yourpropfirm_connection_mt_version_custom_trader">';
-    echo '<option value="enable"' . selected($option, 'enable', false) . '>Enable</option>';
-    echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
-    echo '</select>';
-}
-
 // Render enable Custom Platform
 function yourpropfirm_connection_trading_platforms_callback() {
     $options = get_option('yourpropfirm_connection_trading_platforms'); 
@@ -142,6 +106,20 @@ function yourpropfirm_connection_trading_platforms_callback() {
         $checked = isset($options[$key]) ? 'checked' : '';
         echo '<label><input type="checkbox" name="yourpropfirm_connection_trading_platforms[' . esc_attr($key) . ']" value="1" ' . esc_attr($checked) . '> ' . esc_html($label) . '</label><br>';
     }
+}
+
+// Render default MT version field
+function yourpropfirm_connection_default_mt_version_field_callback() {
+    $option = get_option('yourpropfirm_connection_default_mt_version_field');
+    echo '<select name="yourpropfirm_connection_default_mt_version_field">';
+    echo '<option value="MT4"' . selected($option, 'MT4', false) . '>MT4 Version</option>';
+    echo '<option value="MT5"' . selected($option, 'MT5', false) . '>MT5 Version</option>';
+    echo '<option value="CTrader"' . selected($option, 'CTrader', false) . '>CTrader</option>';
+    echo '<option value="Sirix"' . selected($option, 'Sirix', false) . '>Sirix</option>';
+    echo '<option value="DXTrade"' . selected($option, 'DXTrade', false) . '>DX Trade</option>';
+    echo '<option value="matchTrader"' . selected($option, 'matchTrader', false) . '>Match Trader</option>';
+    echo '<option value="tradeLocker"' . selected($option, 'tradeLocker', false) . '>TradeLocker</option>';
+    echo '</select>';
 }
 
 
