@@ -46,7 +46,7 @@ function yourpropfirm_add_menus() {
 
 // Function to display the main dashboard page content
 function yourpropfirm_dashboard_general_page() {
-    echo '<div class="wrap"><h1>YPF Dashboard</h1><p>Welcome to the YPF Dashboard.</p></div>';
+    echo '<div class="wrap"><h1>YPF Dashboard</h1><p>Welcome to the YPF Dashboard.</p>';
     echo '<form method="post" action="options.php">';
     settings_fields('yourpropfirm_connection_general_settings');
     do_settings_sections('yourpropfirm_connection_general_settings');
@@ -56,7 +56,7 @@ function yourpropfirm_dashboard_general_page() {
 
 // Function to display the settings page content
 function yourpropfirm_challenge_settings_page() {
-    echo '<div class="wrap"><h1>Settings</h1>';
+    echo '<div class="wrap"><h1>Challenge Settings</h1><p>This section allows you to manage Challenge for YourPropFirm plugin.</p>';
     echo '<form method="post" action="options.php">';
     settings_fields('yourpropfirm_connection_challenge_settings');
     do_settings_sections('yourpropfirm_connection_challenge_settings');
@@ -66,5 +66,21 @@ function yourpropfirm_challenge_settings_page() {
 
 // Function to display the addons page content
 function yourpropfirm_competition_settings_page() {
-    echo '<div class="wrap"><h1>Addons</h1><p>This section allows you to manage addons for YourPropFirm plugin.</p></div>';
+    echo '<div class="wrap"><h1>Competition Settings</h1><p>This section allows you to manage Competition for YourPropFirm plugin.</p>';
+    echo '<form method="post" action="options.php">';
+    settings_fields('yourpropfirm_connection_competition_settings');
+    do_settings_sections('yourpropfirm_connection_competition_settings');
+    submit_button();
+    echo '</form></div>';
+
+}
+
+function yourpropfirm_connection_sanitize_checkbox_array($input) {
+    $output = array();
+    if (is_array($input)) {
+        foreach ($input as $key => $value) {
+            $output[$key] = sanitize_text_field($value);
+        }
+    }
+    return $output;
 }

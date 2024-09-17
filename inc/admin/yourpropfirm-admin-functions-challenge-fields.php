@@ -20,7 +20,7 @@ function yourpropfirm_connection_challenge_settings_fields() {
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
     register_setting('yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
 
-    add_settings_section('yourpropfirm_connection_challenge', 'General Settings', 'yourpropfirm_connection_challenge_section_callback', 'yourpropfirm_connection_challenge_settings');
+    add_settings_section('yourpropfirm_connection_challenge', 'Challenge Settings', 'yourpropfirm_connection_challenge_section_callback', 'yourpropfirm_connection_challenge_settings');
 
    
     add_settings_field('yourpropfirm_connection_trading_platforms', 'Enable Trading Platforms', 'yourpropfirm_connection_trading_platforms_callback', 'yourpropfirm_connection_challenge_settings', 'yourpropfirm_connection_challenge');
@@ -104,14 +104,5 @@ function yourpropfirm_connection_enable_response_header_callback() {
     $option = get_option('yourpropfirm_connection_enable_response_header');
     echo '<label><input type="radio" name="yourpropfirm_connection_enable_response_header" value="1"' . checked($option, 1, false) . '> Yes</label>';
     echo '<label><input type="radio" name="yourpropfirm_connection_enable_response_header" value="0"' . checked($option, 0, false) . '> No</label>';
-}
-function yourpropfirm_connection_sanitize_checkbox_array($input) {
-    $output = array();
-    if (is_array($input)) {
-        foreach ($input as $key => $value) {
-            $output[$key] = sanitize_text_field($value);
-        }
-    }
-    return $output;
 }
 ?>
