@@ -103,10 +103,10 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                         $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     } elseif ($yourpropfirm_selection_type === 'competition') {
                         // Call the competition API data function
-                        $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     } else {
                         // Call the challenge API data function
-                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total_value, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     }
 
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);
