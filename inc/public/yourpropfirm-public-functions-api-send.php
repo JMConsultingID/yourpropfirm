@@ -61,6 +61,10 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $json_encoded_total = json_encode(array('order_total' => $order_total_value));
             $decoded_total = json_decode($json_encoded_total, true);
             $order_total = round((float)$decoded_total['order_total'], 2);
+            $log_data['logger']->info($order_total_value,  $log_data['context']);
+            $log_data['logger']->info($decoded_total,  $log_data['context']);
+            $log_data['logger']->info($decoded_total['order_total'],  $log_data['context']);
+            $log_data['logger']->info($order_total,  $log_data['context']);
             
             // Retrieve the profitSplit, use default if not set or empty
             $profitSplit = $order->get_meta('profitSplit');
