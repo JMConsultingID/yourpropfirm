@@ -75,7 +75,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => $order_total,
+        'income' => (float)$order_total,
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
@@ -313,7 +313,7 @@ function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_
             'timeout' => 30,
             'redirection' => 5,
             'headers' => $headers,            
-            'body' => json_encode($api_data)
+            'body' => json_encode($api_data, JSON_NUMERIC_CHECK)
         )
     );
 

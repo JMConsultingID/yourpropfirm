@@ -58,7 +58,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
             $order_currency = $order->get_currency();
             $order_total_value = $order->get_total();
-            $order_total = number_format((float)$order_total_value, 2, '.', '');
+            $json_encoded_total = json_encode(array('order_total' => $order_total_value));
+            $decoded_total = json_decode($json_encoded_total, true);
+            $order_total = round((float)$decoded_total['order_total'], 2);
             
             // Retrieve the profitSplit, use default if not set or empty
             $profitSplit = $order->get_meta('profitSplit');
