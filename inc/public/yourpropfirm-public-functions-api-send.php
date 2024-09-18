@@ -62,7 +62,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $decoded_total = json_decode($json_encoded_total, true);
             $order_total = round((float)$decoded_total['order_total'], 2);
             $order_total_val = floatval($decoded_total['order_total']);
-            $order_total_val_json = json_encode(intval($order_total));
+            $order_total_val_json = json_encode(round($order_total_val, 2));
             $order_total_val_json_float = json_encode($order_total_val);
             $iniget = ini_get('precision');
             $log_data['logger']->info($order_total_value,  $log_data['context']);
