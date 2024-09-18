@@ -40,7 +40,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
         return;
     }
 
-    if ($new_status == 'on-hold' && $old_status != 'on-hold' && $ypf_connection_completed != 1) {
+    if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
         // Check for transient to prevent duplicate API calls
         if (false === get_transient('send_api_lock_' . $order_id)) {
             // Set transient to prevent duplicate API calls within 10 seconds
