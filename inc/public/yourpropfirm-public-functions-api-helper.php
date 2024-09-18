@@ -76,7 +76,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => $order_total_val,
+        'income' => $order_total,
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
