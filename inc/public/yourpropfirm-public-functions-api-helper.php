@@ -61,8 +61,6 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    // Use BCMath to round the order total to 2 decimal places
-    $order_total_rounded = bcdiv(strval($order_total), '1', 2);
 
     $data = array(
         'email' => $user_email,
@@ -77,7 +75,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         'phone' => $user_phone,
         'language' => $site_language_value,
         'currency' => $order_currency,
-        'income' => round((float)$order_total_rounded , 2),
+        'income' => $order_total,
         'invoiceId' => $invoicesIdStr,
         'productId' => $productsIdStr
     );
@@ -121,8 +119,6 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
     $user_zip_code = $order->get_billing_postcode();
     $user_country = $order->get_billing_country();
     $user_phone = $order->get_billing_phone();
-    // Use BCMath to round the order total to 2 decimal places
-    $order_total_rounded = bcdiv(strval($order_total), '1', 2);
 
     // Prepare the main data array
     $data = array(
@@ -135,7 +131,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
         'invoiceId' => $invoiceIdStr,
         'productId' => strval($productId),
         'currency' => $order_currency,
-        'income' => round((float)$order_total_rounded , 2),
+        'income' => $order_total,
         'attributes' => array(  // Attributes like address, city, country, etc.
             'addressLine' => $user_address,
             'city' => $user_city,
