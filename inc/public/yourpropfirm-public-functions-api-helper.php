@@ -313,7 +313,7 @@ function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_
             'timeout' => 30,
             'redirection' => 5,
             'headers' => $headers,            
-            'body' => json_encode($api_data)
+            'body' => json_encode($api_data, JSON_NUMERIC_CHECK)
         )
     );
 
