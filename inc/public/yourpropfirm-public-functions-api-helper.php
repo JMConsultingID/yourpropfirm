@@ -317,7 +317,7 @@ function yourpropfirm_selection_type_response_error($order, $order_id, $products
         $combined_notes = "--Error YourPropfirm--\n";
         $combined_note  .= "Response Loop: " . $products_loop_id . "\n";
         $combined_notes .= "InvoiceId: " . $order_id . "\n";  
-        $combined_notes .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_notes .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products Woocommerce.\n";
         $combined_notes .= "--End Response--\n";
 
 
@@ -326,14 +326,14 @@ function yourpropfirm_selection_type_response_error($order, $order_id, $products
         $combined_note_logs .= "--Begin YPF Response--\n";
         $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
         $combined_note_logs .= "InvoiceId: " . $order_id . "\n";
-        $combined_note_logs .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_note_logs .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products Woocommerce.\n";
         $combined_note_logs .= "--End Response--\n";
     } elseif ($error_type === 'data-error'){
         // Combine all API responses into one note
         $combined_notes = "--Error YourPropfirm--\n";
         $combined_note  .= "Response Loop: " . $products_loop_id . "\n";
         $combined_notes .= "InvoiceId: " . $order_id . "\n";  
-        $combined_notes .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_notes .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products Woocommerce.\n";
         $combined_notes .= "--End Response--\n";
 
 
@@ -342,7 +342,7 @@ function yourpropfirm_selection_type_response_error($order, $order_id, $products
         $combined_note_logs .= "--Begin YPF Response--\n";
         $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
         $combined_note_logs .= "InvoiceId: " . $order_id . "\n";
-        $combined_note_logs .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_note_logs .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products Woocommerce.\n";
         $combined_note_logs .= "--End Response--\n";
     }
 
