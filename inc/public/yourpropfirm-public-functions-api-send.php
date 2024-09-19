@@ -93,7 +93,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 } elseif ($yourpropfirm_selection_type === 'competition' && !empty($competition_id) && $ypf_competition_enabled === 'enable') {
                     $endpoint = "/client/v1/competitions/" . $competition_id . "/register";
                 } else {
-                    $endpoint = "/client/v1/users";
+                    $error_type="endpoint-error";
+                    yourpropfirm_selection_type_response_error($order, $order_id, $products_loop_id, $error_type);
+                    return;
                 }
 
                 $endpoint_url = rtrim($baseUrl, '/') . '/' . ltrim($endpoint, '/');
@@ -108,8 +110,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                         // Call the competition API data function
                         $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     } else {
-                        // Call the challenge API data function
-                        $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        $error_type="data-error";
+                        yourpropfirm_selection_type_response_error($order, $order_id, $products_loop_id, $error_type);
+                        return;
                     }
 
                     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay);

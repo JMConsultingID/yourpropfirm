@@ -172,18 +172,18 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
 
 function yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id_value, $competition_id, $products_loop_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     global $woocommerce;
+    // Ensure the $order object is a valid WC_Order object
+    if (!($order instanceof WC_Order)) {
+        $order = wc_get_order($order_id);
+        if (!$order) return; // Exit if the order cannot be retrieved
+    }
+
     $log_data = yourpropfirm_connection_response_logger();
     $site_language = get_locale();
     
     // Check if WooCommerce is active and the function exists
     if (function_exists('get_woocommerce_currency')) {
         $defaultcurrency = get_woocommerce_currency();
-    }
-
-    // Ensure the $order object is a valid WC_Order object
-    if (!($order instanceof WC_Order)) {
-        $order = wc_get_order($order_id);
-        if (!$order) return; // Exit if the order cannot be retrieved
     }
 
     // Get the currency from the order
@@ -214,6 +214,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Combine all API responses into one note
     $combined_notes = "--YourPropfirm--\n";
     $combined_notes .= "Response Loop: " . $products_loop_id . "\n";
+    $combined_notes .= "YPF Type: " . $yourpropfirm_selection_type . "\n";
     $combined_notes .= "InvoiceId: " . $order_id . "\n";  
     $combined_notes .= "ProductId: " . $product_woo_id . "\n"; 
     $combined_notes .= "Quantity: " . $quantity . "\n";
@@ -261,6 +262,7 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     // Combine all API responses for Log WC-Logger
     $combined_note_logs = "\n";
     $combined_note_logs .= "--Begin YPF Response--\n";
+    $combined_note_logs .= "YPF Type: " . $yourpropfirm_selection_type . "\n";
     $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
     // $combined_note_logs .= "InvoiceId: " . $order_id . "\n";  
     // $combined_note_logs .= "ProductId: " . $product_woo_id . "\n"; 
@@ -299,6 +301,57 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
     wc_create_order_note($order_id, $combined_notes, $added_by_user = false, $customer_note = false);
     $order->save(); // Don't forget to save the order to store these meta data
     $log_data['logger']->info($combined_note_logs,  $log_data['context']);
+}
+
+function yourpropfirm_selection_type_response_error($order, $order_id, $products_loop_id, $error_type){
+    global $woocommerce;
+    // Ensure the $order object is a valid WC_Order object
+    if (!($order instanceof WC_Order)) {
+        $order = wc_get_order($order_id);
+        if (!$order) return; // Exit if the order cannot be retrieved
+    }
+    $log_data = yourpropfirm_connection_response_logger();
+
+    if ( $error_type === 'endpoint-error') {
+        // Combine all API responses into one note
+        $combined_notes = "--Error YourPropfirm--\n";
+        $combined_note  .= "Response Loop: " . $products_loop_id . "\n";
+        $combined_notes .= "InvoiceId: " . $order_id . "\n";  
+        $combined_notes .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_notes .= "--End Response--\n";
+
+
+        // Combine all API responses for Log WC-Logger
+        $combined_note_logs = "\n";
+        $combined_note_logs .= "--Begin YPF Response--\n";
+        $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
+        $combined_note_logs .= "InvoiceId: " . $order_id . "\n";
+        $combined_note_logs .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_note_logs .= "--End Response--\n";
+    } elseif ($error_type === 'data-error'){
+        // Combine all API responses into one note
+        $combined_notes = "--Error YourPropfirm--\n";
+        $combined_note  .= "Response Loop: " . $products_loop_id . "\n";
+        $combined_notes .= "InvoiceId: " . $order_id . "\n";  
+        $combined_notes .= "Error 1001: Empty Endpoint Url, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_notes .= "--End Response--\n";
+
+
+        // Combine all API responses for Log WC-Logger
+        $combined_note_logs = "\n";
+        $combined_note_logs .= "--Begin YPF Response--\n";
+        $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
+        $combined_note_logs .= "InvoiceId: " . $order_id . "\n";
+        $combined_note_logs .= "Error 1001: Empty API Data, Please enable YPF Challenge or Competition Feature and Set the YPF ID on Each Products.\n";
+        $combined_note_logs .= "--End Response--\n";
+    }
+
+
+    // Add the combined note
+    wc_create_order_note($order_id, $combined_notes, $added_by_user = false, $customer_note = false);
+    $order->save(); // Don't forget to save the order to store these meta data
+    $log_data['logger']->info($combined_note_logs,  $log_data['context']);
+
 }
 
 function yourpropfirm_send_wp_remote_post_request($endpoint_url, $api_key, $api_data, $request_delay=0) {
