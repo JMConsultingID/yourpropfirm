@@ -8,7 +8,7 @@
  * @package yourpropfirm
  */
 // Function to handle sending account creation request
-function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     $invoicesId = $order_id;
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -39,7 +39,7 @@ function yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $p
         $api_data_account['addOns'] = $addOns;
     }
 
-    $endpoint_url_full = $endpoint_url . '/' . $user_id . '/accounts';
+    $endpoint_url_full = $endpoint_url . '/client/v1/users/' . urlencode($user_id) . '/accounts';
     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
     
     $http_status = $response['http_status'];

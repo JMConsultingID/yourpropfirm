@@ -124,7 +124,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $combined_note_hit_logs = "\n";
                     $combined_note_hit_logs .= "--Log Send API YPF--\n";
                     $combined_note_hit_logs .= "YPF type: " . $yourpropfirm_selection_type . "\n";
-                    if ($yourpropfirm_selection_type === 'competition') {
+                    if ($yourpropfirm_selection_type === 'competition' && $ypf_challenge_completed === 'enable') {
                          $combined_note_hit_logs .= "CompetitionID: " . $competition_id . "\n";
                     } 
                     $combined_note_hit_logs .= "Endpoint URL: " . $endpoint_url . "\n";
@@ -139,14 +139,18 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     if ($user_id && $quantity > 1) {
                         for ($i = 1; $i < $quantity; $i++) {
                             $quantity_first_product_qty = $i+1;
-                            yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                            if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
+                            yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                            }
                         }
                     }                    
                 } elseif (!empty($program_id) && $first_product && $user_id) {
                     // For subsequent products, loop through each quantity
                     for ($i = 0; $i < $quantity; $i++) {
                         $quantity_other_product_qty = $i+1;
-                        yourpropfirm_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
+                        yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        }
                     }
                 }
             $products_loop_id++;
