@@ -16,7 +16,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     // Retrieve endpoint URL and API Key from plugin settings
     $request_method = get_option('yourpropfirm_connection_request_method');
     $request_delay = get_option('yourpropfirm_connection_request_delay'); 
-    $ypf_connection_completed = get_post_meta($order->get_id(), '_yourpropfirm_connection_completed', true);   
+    $ypf_connection_completed = get_post_meta($order->get_id(), '_yourpropfirm_connection_completed', true); 
 
     $plugin_enabled = get_option('yourpropfirm_connection_enabled');
     if ($plugin_enabled !== 'enable') {
@@ -39,6 +39,9 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
     if (empty($baseUrl) || empty($api_key)) {
         return;
     }
+
+    $ypf_challenge_completed = get_option('yourpropfirm_connection_challenge_enabled');
+    $ypf_competition_enabled = get_option('yourpropfirm_connection_competition_enabled');
 
     if ($new_status == 'completed' && $old_status != 'completed' && $ypf_connection_completed != 1) {
         // Check for transient to prevent duplicate API calls
@@ -85,10 +88,10 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $yourpropfirm_selection_type = 'challenge';
                 }
 
-                if ($yourpropfirm_selection_type === 'challenge') {
+                if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
                     $endpoint = "/client/v1/users";
-                } elseif ($yourpropfirm_selection_type === 'competition' && !empty($competition_id)) {
-                    $endpoint = "/client/v1/competitions/" . esc_attr($competition_id) . "/register";
+                } elseif ($yourpropfirm_selection_type === 'competition' && !empty($competition_id) && $ypf_competition_enabled === 'enable') {
+                    $endpoint = "/client/v1/competitions/" . $competition_id . "/register";
                 } else {
                     $endpoint = "/client/v1/users";
                 }
@@ -98,10 +101,10 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
-                    if ($yourpropfirm_selection_type === 'challenge') {
+                    if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
                         // Call the challenge API data function
                         $api_data = yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
-                    } elseif ($yourpropfirm_selection_type === 'competition') {
+                    } elseif ($yourpropfirm_selection_type === 'competition' && $ypf_competition_enabled === 'enable') {
                         // Call the competition API data function
                         $api_data = yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_id, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                     } else {
