@@ -125,8 +125,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
                     // Combine all API responses For Log WC-Logger
                     $combined_note_hit_logs = "\n";
-                    $combined_note_hit_logs .= "--Log Send API YPF--\n";
-                    $combined_note_hit_logs .= "YPF type: " . $yourpropfirm_selection_type . "\n";
+                    $combined_note_hit_logs .= "--Log Send API YPF | " . $yourpropfirm_selection_type . "--\n";
                     if ($yourpropfirm_selection_type === 'competition' && $ypf_challenge_completed === 'enable') {
                          $combined_note_hit_logs .= "CompetitionID: " . $competition_id . "\n";
                     } 

@@ -213,8 +213,8 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
 
     // Combine all API responses into one note
     $combined_notes = "--YourPropfirm--\n";
-    $combined_notes .= "Response Loop: " . $products_loop_id . "\n";
     $combined_notes .= "YPF Type: " . $yourpropfirm_selection_type . "\n";
+    $combined_notes .= "Response Loop: " . $products_loop_id . "\n";    
     $combined_notes .= "InvoiceId: " . $order_id . "\n";  
     $combined_notes .= "ProductId: " . $product_woo_id . "\n"; 
     $combined_notes .= "Quantity: " . $quantity . "\n";
@@ -261,38 +261,8 @@ function yourpropfirm_handle_api_response_error($order, $http_status, $api_respo
 
     // Combine all API responses for Log WC-Logger
     $combined_note_logs = "\n";
-    $combined_note_logs .= "--Begin YPF Response--\n";
-    $combined_note_logs .= "YPF Type: " . $yourpropfirm_selection_type . "\n";
+    $combined_note_logs .= "--Begin YPF Response-- | " . $yourpropfirm_selection_type . "\n";
     $combined_note_logs .= "Response Loop: " . $products_loop_id . "\n";
-    // $combined_note_logs .= "InvoiceId: " . $order_id . "\n";  
-    // $combined_note_logs .= "ProductId: " . $product_woo_id . "\n"; 
-    // $combined_note_logs .= "Quantity: " . $quantity . "\n";
-    // $combined_note_logs .= "Currency: " . $order_currency . "\n";
-    // $combined_note_logs .= "Order Total: " . $order_total . "\n";
-    // $combined_note_logs .= "HTTP Response: " . $http_status . "\n";
-    // $combined_note_logs .= "YPF User ID: " . $user_id . "\n";         
-    // $combined_note_logs .= "ProgramID: " . $program_id_value . "\n";
-    // $combined_note_logs .= "MTVersion: " . $mt_version_value . "\n";
-
-    // if ($profitSplit !== 0 && $profitSplit !== '0' || 
-    //     $withdrawActiveDays !== 0 && $withdrawActiveDays !== '0' || 
-    //     $withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
-        
-    //     $combined_note_logs .= "addOns:\n";
-        
-    //     if ($profitSplit !== 0 && $profitSplit !== '0') {
-    //         $combined_note_logs .= "- profitSplit: " . $profitSplit . "\n";
-    //     }
-        
-    //     if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
-    //         $combined_note_logs .= "- withdrawActiveDays: " . $withdrawActiveDays . "\n";
-    //     }
-        
-    //     if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
-    //         $combined_note_logs .= "- withdrawTradingDays: " . $withdrawTradingDays . "\n";
-    //     }
-    // }
-
     $combined_note_logs .= "YPF API Response: " . $api_response_logs . "\n";
     $combined_note_logs .= "--End Response--\n";
 
