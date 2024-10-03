@@ -57,7 +57,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
             $mt_version_value = get_post_meta( $order_id, '_yourpropfirm_mt_version', true ) ?: $default_mt;
 
             $site_language = get_locale();
-            $site_language_value = substr( $site_language, 0, 2 );
+            $site_language_value = get_bloginfo("language");
 
             $order_currency = $order->get_currency();
             $order_total_value = $order->get_total();
