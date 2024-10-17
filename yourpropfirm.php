@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-define( 'YOURPROPFIRM_VERSION', '1.1.6.9' );
+define( 'YOURPROPFIRM_VERSION', '1.2.1.0' );
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
