@@ -7,33 +7,73 @@
  *
  * @package yourpropfirm
  */
-// Add a custom field to WooCommerce product
-function yourpropfirm_add_program_id_field() {
-    global $woocommerce, $post;
-
-    // Get the product ID
-    $product_id = $post->ID;
-
-    // Display the custom field on the product edit page
-    woocommerce_wp_text_input(
+// Add the Challenge/Competition select field
+function yourpropfirm_add_selection_field() {
+    woocommerce_wp_select(
         array(
-            'id'          => '_yourpropfirm_program_id',
-            'label'       => __('ProgramId (YourPropfirm)', 'yourpropfirm'),
-            'placeholder' => __('Enter ProgramId (YourPropfirm)', 'yourpropfirm'),
-            'desc_tip'    => true,
-            'description' => __('Enter ProgramId (YourPropfirm).', 'yourpropfirm'),
+            'id' => '_yourpropfirm_selection_type',
+            'label' => __('Select Type', 'yourpropfirm'),
+            'options' => array(
+                'challenge' => __('Challenge', 'yourpropfirm'),
+                'competition' => __('Competition', 'yourpropfirm'),
+            ),
             'wrapper_class' => 'show_if_simple',
         )
     );
 }
-add_action('woocommerce_product_options_general_product_data', 'yourpropfirm_add_program_id_field', 9);
+add_action('woocommerce_product_options_general_product_data', 'yourpropfirm_add_selection_field');
 
-// Save the custom field value
-function yourpropfirm_save_program_id_field($product_id) {
-    $program_id = sanitize_text_field($_POST['_yourpropfirm_program_id']);
-    update_post_meta($product_id, '_yourpropfirm_program_id', esc_attr($program_id));
+// Save the selected type
+function yourpropfirm_save_selection_field($product_id) {
+    $selection_type = sanitize_text_field($_POST['_yourpropfirm_selection_type']);
+    update_post_meta($product_id, '_yourpropfirm_selection_type', esc_attr($selection_type));
 }
-add_action('woocommerce_process_product_meta', 'yourpropfirm_save_program_id_field');
+add_action('woocommerce_process_product_meta', 'yourpropfirm_save_selection_field');
+
+
+// Add custom fields for ProgramId and CompetitionId
+function yourpropfirm_add_dynamic_fields() {
+    global $post;
+    
+    // Add ProgramId field
+    woocommerce_wp_text_input(
+        array(
+            'id' => '_yourpropfirm_program_id',
+            'label' => __('ProgramId (YourPropfirm)', 'yourpropfirm'),
+            'placeholder' => __('Enter ProgramId (YourPropfirm)', 'yourpropfirm'),
+            'desc_tip' => true,
+            'description' => __('Enter ProgramId (YourPropfirm).', 'yourpropfirm'),
+            'wrapper_class' => 'show_if_simple',
+        )
+    );
+
+    // Add CompetitionId field
+    woocommerce_wp_text_input(
+        array(
+            'id' => '_yourpropfirm_competition_id',
+            'label' => __('CompetitionId (YourPropfirm)', 'yourpropfirm'),
+            'placeholder' => __('Enter CompetitionId (YourPropfirm)', 'yourpropfirm'),
+            'desc_tip' => true,
+            'description' => __('Enter CompetitionId (YourPropfirm).', 'yourpropfirm'),
+            'wrapper_class' => 'show_if_simple',
+        )
+    );
+}
+add_action('woocommerce_product_options_general_product_data', 'yourpropfirm_add_dynamic_fields');
+
+// Save ProgramId and CompetitionId fields
+function yourpropfirm_save_dynamic_fields($product_id) {
+    if (isset($_POST['_yourpropfirm_program_id'])) {
+        $program_id = sanitize_text_field($_POST['_yourpropfirm_program_id']);
+        update_post_meta($product_id, '_yourpropfirm_program_id', esc_attr($program_id));
+    }
+
+    if (isset($_POST['_yourpropfirm_competition_id'])) {
+        $competition_id = sanitize_text_field($_POST['_yourpropfirm_competition_id']);
+        update_post_meta($product_id, '_yourpropfirm_competition_id', esc_attr($competition_id));
+    }
+}
+add_action('woocommerce_process_product_meta', 'yourpropfirm_save_dynamic_fields');
 
 function yourpropfirm_add_program_id_column_to_admin_products($columns) {
     $new_columns = array();

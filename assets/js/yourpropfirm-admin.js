@@ -30,18 +30,35 @@
      */
 
     jQuery(document).ready(function($) {
+        // Initial check on page load
+        checkSelectionType();
 
-    // Saat Quick Edit dipanggil, set value dari custom field "_program_id"
+        // Check when selection type changes
+        $('#_yourpropfirm_selection_type').change(function() {
+            checkSelectionType();
+        });
+
+        function checkSelectionType() {
+            var selectionType = $('#_yourpropfirm_selection_type').val();
+
+            if (selectionType === 'challenge') {
+                $('._yourpropfirm_program_id_field').show();
+                $('._yourpropfirm_competition_id_field').hide();
+            } else if (selectionType === 'competition') {
+                $('._yourpropfirm_program_id_field').hide();
+                $('._yourpropfirm_competition_id_field').show();
+            } else {
+                $('._yourpropfirm_program_id_field').hide();
+                $('._yourpropfirm_competition_id_field').hide();
+            }
+        }
+
         $('#the-list').on('click', '.editinline', function() {
-
-            // Ambil row ID dari produk yang sedang diedit
             var post_id = $(this).closest('tr').attr('id');
             post_id = post_id.replace("post-", "");
 
-            // Ambil value dari kolom "Program ID" untuk produk tersebut
             var program_id = $('#yourpropfirm_program_id-' + post_id).text();
 
-            // Set value untuk input field "_program_id" dalam form Quick Edit
             $(':input[name="_yourpropfirm_program_id"]').val(program_id);
         });
 
