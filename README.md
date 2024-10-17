@@ -23,7 +23,7 @@ Before installing *Your PropFirm Addon*, ensure that your WordPress installation
 
 ## **Downloading the Plugin**
 
-1. Visit the GitHub repository for *Your PropFirm Addon* at [GitHub Link](https://github.com/JMConsultingID/your-propfirm-addon/releases).
+1. Visit the GitHub repository for *Your PropFirm Addon* at [GitHub Link](https://github.com/JMConsultingID/yourpropfirm/releases).
 2. Navigate to the 'Releases' section.
 3. Click on the latest release.
 4. Download the **`.zip`** file for the plugin.
