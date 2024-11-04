@@ -98,7 +98,7 @@ function yourpropfirm_connection_trading_platforms_callback() {
         'enable_ctrader' => 'cTrader',
         'enable_sirix' => 'Sirix',
         'enable_dx_trade' => 'DX Trade',
-        'enable_match_trader' => 'Match Trader',
+        'enable_match_trader' => 'MatchTrade',
         'enable_tradelocker' => 'TradeLocker'
     );
 
@@ -117,7 +117,7 @@ function yourpropfirm_connection_default_mt_version_field_callback() {
     echo '<option value="CTrader"' . selected($option, 'CTrader', false) . '>CTrader</option>';
     echo '<option value="Sirix"' . selected($option, 'Sirix', false) . '>Sirix</option>';
     echo '<option value="DXTrade"' . selected($option, 'DXTrade', false) . '>DX Trade</option>';
-    echo '<option value="matchTrader"' . selected($option, 'matchTrader', false) . '>Match Trader</option>';
+    echo '<option value="MatchTrade"' . selected($option, 'MatchTrade', false) . '>MatchTrade</option>';
     echo '<option value="tradeLocker"' . selected($option, 'tradeLocker', false) . '>TradeLocker</option>';
     echo '</select>';
 }
