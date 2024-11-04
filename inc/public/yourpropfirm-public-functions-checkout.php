@@ -36,7 +36,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
     }
     if (!empty($trading_platforms_options['enable_match_trader'])) {
-        $options['matchTrader'] = __('Match Trader', 'yourpropfirm');
+        $options['MatchTrade'] = __('MatchTrade', 'yourpropfirm');
     }
     if (!empty($trading_platforms_options['enable_tradelocker'])) {
         $options['tradeLocker'] = __('TradeLocker', 'yourpropfirm');
