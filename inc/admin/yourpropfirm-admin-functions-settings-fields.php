@@ -97,7 +97,7 @@ function yourpropfirm_connection_trading_platforms_callback() {
         'enable_mt5' => 'MT5',
         'enable_ctrader' => 'cTrader',
         'enable_sirix' => 'Sirix',
-        'enable_dx_trade' => 'DX Trade',
+        'enable_dx_trade' => 'DXTrade',
         'enable_match_trader' => 'MatchTrade',
         'enable_tradelocker' => 'TradeLocker'
     );
