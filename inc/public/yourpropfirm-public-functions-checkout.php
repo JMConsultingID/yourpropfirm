@@ -24,16 +24,16 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     if (!empty($trading_platforms_options['enable_mt5'])) {
         $options['MT5'] = __('MT5', 'yourpropfirm');
     }
-
+    if (!empty($trading_platforms_options['enable_dx_trade'])) {
+        $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
+    }
     if (!empty($trading_platforms_options['enable_ctrader'])) {
-        $options['CTrader'] = __('cTrader', 'yourpropfirm');
+        $options['CTrader'] = __('CTrader', 'yourpropfirm');
     }
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');
     }
-    if (!empty($trading_platforms_options['enable_dx_trade'])) {
-        $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
-    }
+    
     if (!empty($trading_platforms_options['enable_match_trader'])) {
         $options['MatchTrade'] = __('MatchTrade', 'yourpropfirm');
     }
