@@ -18,7 +18,6 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
 
-    $options = ['' => __('Select Trading Platform', 'yourpropfirm')];
     if (!empty($trading_platforms_options['enable_mt4'])) {
         $options['MT4'] = __('MT4', 'yourpropfirm');
     }
