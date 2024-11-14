@@ -100,6 +100,10 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
 
                 $endpoint_url = rtrim($baseUrl, '/') . '/' . ltrim($endpoint, '/');
 
+                if (!isset($first_product)) {
+                    $first_product = false;
+                }
+
                 if (!empty($program_id) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
