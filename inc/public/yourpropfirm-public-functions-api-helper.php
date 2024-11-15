@@ -8,45 +8,71 @@
  * @package yourpropfirm
  */
 // Function to handle sending account creation request
-function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $order_currency, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     $invoicesId = $order_id;
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
     $productsIdStr = strval($productsId);
     
+    // Retrieve the per-product total from the order
+    $order_item = $order->get_item($products_loop_id);
+    $product_total = $order_item->get_total(); // Total after discount
+    $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
+    $product_fee_total = 0;
+
+    // Calculate fees for the specific product if there are any
+    foreach ($order->get_fees() as $fee) {
+        if ($fee->get_product_id() == $product_woo_id) {
+            $product_fee_total += $fee->get_total();
+        }
+    }
+
+    // Combine the total for the specific product, including fees
+    $order_total_per_product = $product_total + $product_fee_total;
+
     $api_data_account = array(
         'mtVersion' => $mt_version,
         'programId' => $program_id,
         'InvoiceId' => $invoicesIdStr,
-        'ProductId' => $productsIdStr
+        'ProductId' => $productsIdStr,
+        'currency' => $order_currency, // Add currency for the product
+        'income' => $order_total_per_product, // Add income (total per product including fees and discounts)
     );
 
     $addOns = array();
     
+    // Add profitSplit to addOns if it is not zero
     if ($profitSplit !== 0 && $profitSplit !== '0') {
         $addOns['profitSplit'] = intval($profitSplit);
     }
 
+    // Add withdrawActiveDays to addOns if it is not zero
     if ($withdrawActiveDays !== 0 && $withdrawActiveDays !== '0') {
         $addOns['withdrawActiveDays'] = intval($withdrawActiveDays);
     }
 
+    // Add withdrawTradingDays to addOns if it is not zero
     if ($withdrawTradingDays !== 0 && $withdrawTradingDays !== '0') {
         $addOns['withdrawTradingDays'] = intval($withdrawTradingDays);
     }
 
+    // Add addOns to api_data_account if there are any entries
     if (!empty($addOns)) {
         $api_data_account['addOns'] = $addOns;
     }
 
+    // Construct the full endpoint URL for the API request
     $endpoint_url_full = $endpoint_url . '/client/v1/users/' . urlencode($user_id) . '/accounts';
+    // Send API request using your custom function
     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
     
     $http_status = $response['http_status'];
     $api_response = $response['api_response'];
 
+    // Handle API response errors using your custom error handling function
     yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
+
 
 function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id, $program_id_value, $mt_version_value, $site_language_value, $order_currency, $order_total, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {  
     $invoicesId = $order->get_id();
