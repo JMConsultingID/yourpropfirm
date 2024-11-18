@@ -8,6 +8,9 @@
  */
 
 /* Add your custom CSS here */
+.yourpropfirm_mt_version_field_wrapper{
+	margin-left: 3px;
+}
 .ypf_mt_version_radio_option {
     display: flex; 
     flex-wrap: wrap; 
