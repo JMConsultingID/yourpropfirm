@@ -55,14 +55,26 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                 'options' => $options,
             ), '');
         } elseif ($field_type === 'radio') {
-            woocommerce_form_field('yourpropfirm_mt_version', array(
-                'type' => 'radio',
-                'class' => array('form-row-wide ypf_mt_version_field'),
-                'label' => __('Trading Platforms', 'yourpropfirm'),
-                'required' => true,
-                'options' => $options,
-                'default' => $first_option,
-            ), $first_option);
+            ?>
+            <p class="form-row form-row-wide ypf_mt_version_field validate-required" id="yourpropfirm_mt_version_field" data-priority="">
+            <label class="form-label"><?php echo __('Trading Platforms', 'yourpropfirm'); ?>&nbsp;<abbr class="required" title="required">*</abbr></label>
+            <?php foreach ($options as $value => $label) : ?>
+                <div class="field-group">
+                    <input 
+                        type="radio" 
+                        class="input-radio" 
+                        value="<?php echo esc_attr($value); ?>" 
+                        name="yourpropfirm_mt_version" 
+                        aria-required="true" 
+                        id="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" 
+                        <?php checked($value, $first_option); // Preselect the first option ?>
+                    >
+                    <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
+                        <?php echo esc_html($label); ?>
+                    </label>
+                </div>
+            <?php endforeach; ?>
+            </p>
         }
         ?>
     </div>
