@@ -82,7 +82,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                         <?php checked($value, $first_option); ?>
                     >
                     <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
-                        <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="max-height: 40px; margin-right: 10px;">
+                        <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="height: 40px;">
                         <span><?php echo esc_html($label); ?></span>                        
                     </label>
                 </div>
