@@ -34,3 +34,7 @@
     align-items: center;
     margin: 0;
 }
+
+.ypf_mt_version_radio_option .field-group span{
+	display: none;
+}
