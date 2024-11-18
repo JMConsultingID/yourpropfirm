@@ -75,6 +75,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                 </div>
             <?php endforeach; ?>
             </p>
+        <?php
         }
         ?>
     </div>
