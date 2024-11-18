@@ -68,8 +68,8 @@ function yourpropfirm_display_custom_field_after_billing_form() {
             ), '');
         } elseif ($field_type === 'radio') {
             ?>
-            <div class="form-row form-row-wide ypf_mt_version_field ypf_mt_version_radio_option validate-required" id="yourpropfirm_mt_version_field" data-priority="">
             <label class="form-label"><?php echo __('Trading Platforms', 'yourpropfirm'); ?>&nbsp;<abbr class="required" title="required">*</abbr></label>
+            <div class="form-row form-row-wide ypf_mt_version_field ypf_mt_version_radio_option validate-required" id="yourpropfirm_mt_version_field" data-priority="">            
             <?php foreach ($options as $value => $label) : ?>
                 <div class="field-group">
                     <input 
