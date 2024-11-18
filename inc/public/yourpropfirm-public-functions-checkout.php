@@ -22,7 +22,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     $images = [];
 
     // Base URL for images
-    $images_base_url = plugins_url('assets/images/', __FILE__);
+    $images_base_url = plugins_url('assets/images/', dirname(dirname(__FILE__)));
 
     if (!empty($trading_platforms_options['enable_mt4'])) {
         $options['MT4'] = __('MT4', 'yourpropfirm');
@@ -38,7 +38,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
     if (!empty($trading_platforms_options['enable_ctrader'])) {
         $options['CTrader'] = __('CTrader', 'yourpropfirm');
-        $images['CTrader'] = $images_base_url . 'ctrader.png'; // Corrected: Added .png
+        $images['CTrader'] = $images_base_url . 'ctrader.png';
     }
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');
@@ -79,7 +79,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                         name="yourpropfirm_mt_version" 
                         aria-required="true" 
                         id="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" 
-                        <?php checked($value, $first_option); // Preselect the first option ?>
+                        <?php checked($value, $first_option); ?>
                     >
                     <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
                         <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="max-height: 40px; margin-right: 10px;">
