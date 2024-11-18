@@ -15,19 +15,19 @@
 	margin-left: 3px;
 }
 .ypf_mt_version_radio_option {
+	background: #fff;
     display: flex; 
     flex-wrap: wrap; 
-    gap: 5px; 
+    gap: 15px; 
     align-items: center;
-    padding: 0px;
-    margin: 0px;
-    margin-top: 10px;
+    padding: 0px!important;
+    margin-top: 10px 0px 0px 0px!important;
 }
 .ypf_mt_version_radio_option .field-group {
     display: flex; 
     align-items: center; 
     gap: 10px;
-    width: 48%;
+    width: 45%;
     padding: 10px 0px;
 }
 
