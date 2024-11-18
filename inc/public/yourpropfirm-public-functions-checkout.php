@@ -34,11 +34,11 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
     if (!empty($trading_platforms_options['enable_dx_trade'])) {
         $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
-        $images['DXTrade'] = $images_base_url . 'dxtrade.png';
+        $images['DXTrade'] = $images_base_url . 'dxtrade.svg';
     }
     if (!empty($trading_platforms_options['enable_ctrader'])) {
         $options['CTrader'] = __('CTrader', 'yourpropfirm');
-        $images['CTrader'] = $images_base_url . 'ctrader.png';
+        $images['CTrader'] = $images_base_url . 'ctrader.svg';
     }
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');

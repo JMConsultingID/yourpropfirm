@@ -14,15 +14,18 @@
 .ypf_mt_version_radio_option {
     display: flex; 
     flex-wrap: wrap; 
-    gap: 20px; 
+    gap: 5px; 
     align-items: center;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 10px;
 }
-
-/* Styling each field group */
 .ypf_mt_version_radio_option .field-group {
     display: flex; 
     align-items: center; 
-    gap: 10px; 
+    gap: 10px;
+    width: 48%;
+    padding: 10px;
 }
 
 /* Image styling with a consistent size */
