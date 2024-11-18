@@ -137,8 +137,8 @@ function yourpropfirm_connection_mt_version_field_callback() {
 function yourpropfirm_connection_mt_version_type_callback(){
     $option = get_option('yourpropfirm_connection_mt_version_type');
     echo '<select name="yourpropfirm_connection_mt_version_type">';
-    echo '<option value="select"' . selected($option, 'enable', false) . '>Select Option</option>';
-    echo '<option value="radio"' . selected($option, 'disable', false) . '>Radio Button</option>';
+    echo '<option value="select"' . selected($option, 'select', false) . '>Select Option</option>';
+    echo '<option value="radio"' . selected($option, 'radio', false) . '>Radio Button</option>';
     echo '</select>';
 }
 
