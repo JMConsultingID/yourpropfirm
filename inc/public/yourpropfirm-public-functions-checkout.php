@@ -21,6 +21,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     $options = [];
     $images = [];
 
+    // Base URL for images
     $images_base_url = plugins_url('assets/images/', __FILE__);
 
     if (!empty($trading_platforms_options['enable_mt4'])) {
@@ -37,7 +38,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
     if (!empty($trading_platforms_options['enable_ctrader'])) {
         $options['CTrader'] = __('CTrader', 'yourpropfirm');
-         $images['DXTrade'] = $images_base_url . 'ctrader';
+        $images['CTrader'] = $images_base_url . 'ctrader.png'; // Corrected: Added .png
     }
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');
