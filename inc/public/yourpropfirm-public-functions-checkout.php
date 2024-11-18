@@ -41,11 +41,12 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         $options['tradeLocker'] = __('TradeLocker', 'yourpropfirm');
     }
 
+    $first_option = array_key_first($options);
+
     ?>
     <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
         <?php
         if ($field_type === 'select') {
-            // Render a select dropdown
             woocommerce_form_field('yourpropfirm_mt_version', array(
                 'type' => 'select',
                 'class' => array('form-row-wide ypf_mt_version_field'),
@@ -54,14 +55,14 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                 'options' => $options,
             ), '');
         } elseif ($field_type === 'radio') {
-            // Render radio buttons
             woocommerce_form_field('yourpropfirm_mt_version', array(
                 'type' => 'radio',
                 'class' => array('form-row-wide ypf_mt_version_field'),
                 'label' => __('Trading Platforms', 'yourpropfirm'),
                 'required' => true,
                 'options' => $options,
-            ), '');
+                'default' => $first_option,
+            ), $first_option);
         }
         ?>
     </div>
