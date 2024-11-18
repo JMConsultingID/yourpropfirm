@@ -9,18 +9,28 @@
 
 /* Add your custom CSS here */
 .ypf_mt_version_radio_option {
-    display: flex;
-    flex-direction: column;
-}
-.ypf_mt_version_radio_option .field-group {
-    display: flex;
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 20px; 
     align-items: center;
-    margin-right: 20px;
 }
+
+/* Styling each field group */
+.ypf_mt_version_radio_option .field-group {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+
+/* Image styling with a consistent size */
 .ypf_mt_version_radio_option .field-group img {
     margin-right: 10px;
+    max-height: 40px;
 }
+
+/* Label and text alignment */
 .ypf_mt_version_radio_option .field-group label {
     display: flex;
     align-items: center;
+    margin: 0;
 }
