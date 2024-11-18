@@ -19,26 +19,37 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     }
 
     $options = [];
+    $images = [];
+
+    $images_base_url = plugins_url('assets/images/', __FILE__);
+
     if (!empty($trading_platforms_options['enable_mt4'])) {
         $options['MT4'] = __('MT4', 'yourpropfirm');
+        $images['MT4'] = $images_base_url . 'mt4.png'; 
     }
     if (!empty($trading_platforms_options['enable_mt5'])) {
         $options['MT5'] = __('MT5', 'yourpropfirm');
+        $images['MT5'] = $images_base_url . 'mt5.png';
     }
     if (!empty($trading_platforms_options['enable_dx_trade'])) {
         $options['DXTrade'] = __('DX Trade', 'yourpropfirm');
+        $images['DXTrade'] = $images_base_url . 'dxtrade.png';
     }
     if (!empty($trading_platforms_options['enable_ctrader'])) {
         $options['CTrader'] = __('CTrader', 'yourpropfirm');
+         $images['DXTrade'] = $images_base_url . 'ctrader';
     }
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');
+        $images['Sirix'] = $images_base_url . 'sirix.png';
     }
     if (!empty($trading_platforms_options['enable_match_trader'])) {
         $options['MatchTrade'] = __('MatchTrade', 'yourpropfirm');
+        $images['MatchTrade'] = $images_base_url . 'matchtrade.png';
     }
     if (!empty($trading_platforms_options['enable_tradelocker'])) {
         $options['tradeLocker'] = __('TradeLocker', 'yourpropfirm');
+        $images['tradeLocker'] = $images_base_url . 'tradelocker.png';
     }
 
     $first_option = array_key_first($options);
@@ -70,6 +81,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                         <?php checked($value, $first_option); // Preselect the first option ?>
                     >
                     <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
+                        <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="max-height: 40px; margin-right: 10px;">
                         <?php echo esc_html($label); ?>
                     </label>
                 </div>
