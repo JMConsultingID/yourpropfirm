@@ -68,7 +68,7 @@ function yourpropfirm_display_custom_field_after_billing_form() {
             ), '');
         } elseif ($field_type === 'radio') {
             ?>
-            <p class="form-row form-row-wide ypf_mt_version_field validate-required" id="yourpropfirm_mt_version_field" data-priority="">
+            <div class="form-row form-row-wide ypf_mt_version_field ypf_mt_version_radio_option validate-required" id="yourpropfirm_mt_version_field" data-priority="">
             <label class="form-label"><?php echo __('Trading Platforms', 'yourpropfirm'); ?>&nbsp;<abbr class="required" title="required">*</abbr></label>
             <?php foreach ($options as $value => $label) : ?>
                 <div class="field-group">
@@ -83,11 +83,11 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                     >
                     <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
                         <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="max-height: 40px; margin-right: 10px;">
-                        <?php echo esc_html($label); ?>
+                        <span><?php echo esc_html($label); ?></span>                        
                     </label>
                 </div>
             <?php endforeach; ?>
-            </p>
+            </div>
         <?php
         }
         ?>

@@ -8,3 +8,19 @@
  */
 
 /* Add your custom CSS here */
+.ypf_mt_version_radio_option {
+    display: flex;
+    flex-direction: column;
+}
+.ypf_mt_version_radio_option .field-group {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.ypf_mt_version_radio_option .field-group img {
+    margin-right: 10px;
+}
+.ypf_mt_version_radio_option .field-group label {
+    display: flex;
+    align-items: center;
+}
