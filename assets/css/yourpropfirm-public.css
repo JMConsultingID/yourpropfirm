@@ -8,6 +8,9 @@
  */
 
 /* Add your custom CSS here */
+.yourpropfirm_mt_version abbr[title] {
+    text-decoration: none!important;
+}
 .yourpropfirm_mt_version_field_radio_wrapper{
 	margin-left: 3px;
 }
