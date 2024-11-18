@@ -53,21 +53,25 @@ function yourpropfirm_display_custom_field_after_billing_form() {
         $images['tradeLocker'] = $images_base_url . 'tradelocker.png';
     }
 
-    $first_option = array_key_first($options);
-
-    ?>
-    <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
-        <?php
-        if ($field_type === 'select') {
-            woocommerce_form_field('yourpropfirm_mt_version', array(
-                'type' => 'select',
-                'class' => array('form-row-wide ypf_mt_version_field'),
-                'label' => __('Trading Platforms', 'yourpropfirm'),
-                'required' => true,
-                'options' => $options,
-            ), '');
-        } elseif ($field_type === 'radio') {
+    $first_option = array_key_first($options);    
+        
+    if ($field_type === 'select') {
+        ?>
+        <div class="yourpropfirm_mt_version yourpropfirm_mt_version_select_field_wrapper">
+            <?php
+                woocommerce_form_field('yourpropfirm_mt_version', array(
+                    'type' => 'select',
+                    'class' => array('form-row-wide ypf_mt_version_field'),
+                    'label' => __('Trading Platforms', 'yourpropfirm'),
+                    'required' => true,
+                    'options' => $options,
+                ), '');
             ?>
+        </div>
+    <?php
+    } elseif ($field_type === 'radio') {
+        ?>
+        <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_radio_wrapper">
             <label class="form-label"><?php echo __('Trading Platforms', 'yourpropfirm'); ?>&nbsp;<abbr class="required" title="required">*</abbr></label>
             <div class="form-row form-row-wide ypf_mt_version_field ypf_mt_version_radio_option validate-required" id="yourpropfirm_mt_version_field" data-priority="">            
             <?php foreach ($options as $value => $label) : ?>
@@ -83,16 +87,14 @@ function yourpropfirm_display_custom_field_after_billing_form() {
                     >
                     <label for="yourpropfirm_mt_version_<?php echo esc_attr($value); ?>" class="radio">
                         <img src="<?php echo esc_url($images[$value]); ?>" alt="<?php echo esc_attr($label); ?>" style="height: 40px;">
-                        <span><?php echo esc_html($label); ?></span>                        
+                        <span><?php echo esc_html($label); ?></span>
                     </label>
                 </div>
             <?php endforeach; ?>
             </div>
-        <?php
-        }
-        ?>
-    </div>
+        </div>
     <?php
+    }
 }
 
 function yourpropfirm_mt_version_validate_field() {
