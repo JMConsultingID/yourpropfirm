@@ -23,6 +23,7 @@ function yourpropfirm_connection_general_settings_fields() {
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_trading_platforms',  array('sanitize_callback' => 'yourpropfirm_connection_sanitize_checkbox_array', 'default' => array()));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
+    register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_mt_version_type', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'select'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
