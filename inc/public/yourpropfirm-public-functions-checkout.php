@@ -12,12 +12,13 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     $enable_mtversion_field = get_option('yourpropfirm_connection_mt_version_field');
     $default_mt = get_option('yourpropfirm_connection_default_mt_version_field');
     $trading_platforms_options = get_option('yourpropfirm_connection_trading_platforms');
+    $field_type = get_option('yourpropfirm_connection_mt_version_type'); // Get the field type option
 
     if ($plugin_enabled !== 'enable' || $enable_mtversion_field !== 'enable') {
         return;
     }
 
-
+    $options = [];
     if (!empty($trading_platforms_options['enable_mt4'])) {
         $options['MT4'] = __('MT4', 'yourpropfirm');
     }
@@ -33,7 +34,6 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     if (!empty($trading_platforms_options['enable_sirix'])) {
         $options['Sirix'] = __('Sirix', 'yourpropfirm');
     }
-    
     if (!empty($trading_platforms_options['enable_match_trader'])) {
         $options['MatchTrade'] = __('MatchTrade', 'yourpropfirm');
     }
@@ -44,13 +44,25 @@ function yourpropfirm_display_custom_field_after_billing_form() {
     ?>
     <div class="yourpropfirm_mt_version yourpropfirm_mt_version_field_wrapper">
         <?php
-        woocommerce_form_field('yourpropfirm_mt_version', array(
-            'type' => 'select',
-            'class' => array('form-row-wide ypf_mt_version_field'),
-            'label' => __('Trading Platforms', 'yourpropfirm'),
-            'required' => true,
-            'options' => $options // Use the conditional options here
-        ), '');
+        if ($field_type === 'select') {
+            // Render a select dropdown
+            woocommerce_form_field('yourpropfirm_mt_version', array(
+                'type' => 'select',
+                'class' => array('form-row-wide ypf_mt_version_field'),
+                'label' => __('Trading Platforms', 'yourpropfirm'),
+                'required' => true,
+                'options' => $options,
+            ), '');
+        } elseif ($field_type === 'radio') {
+            // Render radio buttons
+            woocommerce_form_field('yourpropfirm_mt_version', array(
+                'type' => 'radio',
+                'class' => array('form-row-wide ypf_mt_version_field'),
+                'label' => __('Trading Platforms', 'yourpropfirm'),
+                'required' => true,
+                'options' => $options,
+            ), '');
+        }
         ?>
     </div>
     <?php
