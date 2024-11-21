@@ -47,3 +47,9 @@
 .ypf_mt_version_radio_option .field-group span{
 	display: none;
 }
+
+@media (max-width: 576px) {
+.ypf_mt_version_radio_option .field-group img {
+    height: 20px!important;
+}
+}
