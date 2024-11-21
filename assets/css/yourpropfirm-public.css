@@ -49,6 +49,9 @@
 }
 
 @media (max-width: 576px) {
+.ypf_mt_version_radio_option .field-group {
+    padding: 10px 0px 0px 0px!important;
+}
 .ypf_mt_version_radio_option .field-group img {
     height: 20px!important;
 }
