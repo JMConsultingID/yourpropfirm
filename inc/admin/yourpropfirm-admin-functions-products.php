@@ -93,8 +93,11 @@ add_filter('manage_edit-product_columns', 'yourpropfirm_add_program_id_column_to
 function yourpropfirm_display_program_id_in_admin_products($column, $post_id) {
     if ('yourpropfirm_program_id' === $column) {
         $program_id = get_post_meta($post_id, '_yourpropfirm_program_id', true);
+        $competition_id = get_post_meta($post_id, '_yourpropfirm_competition_id', true);
         if ($program_id) {
             echo '<span id="yourpropfirm_program_id-' . $post_id . '">' . esc_html($program_id) . '</span>'; 
+        } elseif ($competition_id)  {
+            echo '<span id="yourpropfirm_program_id-' . $post_id . '">' . esc_html($competition_id) . '</span>'; 
         } else {
             echo '—';
         }
