@@ -104,7 +104,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $first_product = false;
                 }
 
-                if (!empty($program_id) && !$first_product) {
+                if ((!empty($program_id) || !empty($competition_id)) && !$first_product) {
                     // If first product, send initial request to create user
                     $first_product = true;
                     if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
