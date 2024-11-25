@@ -93,17 +93,42 @@ add_filter('manage_edit-product_columns', 'yourpropfirm_add_program_id_column_to
 function yourpropfirm_display_program_id_in_admin_products($column, $post_id) {
     if ('yourpropfirm_program_id' === $column) {
         $program_id = get_post_meta($post_id, '_yourpropfirm_program_id', true);
-        $competition_id = get_post_meta($post_id, '_yourpropfirm_competition_id', true);
         if ($program_id) {
             echo '<span id="yourpropfirm_program_id-' . $post_id . '">' . esc_html($program_id) . '</span>'; 
-        } elseif ($competition_id)  {
-            echo '<span id="yourpropfirm_program_id-' . $post_id . '">' . esc_html($competition_id) . '</span>'; 
         } else {
             echo '—';
         }
     }
 }
 add_action('manage_product_posts_custom_column', 'yourpropfirm_display_program_id_in_admin_products', 10, 2);
+
+
+function yourpropfirm_add_competition_id_column_to_admin_products($columns) {
+    $new_columns = array();
+
+    foreach ($columns as $key => $name) {
+        $new_columns[$key] = $name;
+
+        if ('sku' === $key) {
+            $new_columns['yourpropfirm_competition_id'] = __('CompetitionID', 'yourpropfirm');
+        }
+    }
+
+    return $new_columns;
+}
+add_filter('manage_edit-product_columns', 'yourpropfirm_add_competition_id_column_to_admin_products', 20);
+
+function yourpropfirm_display_competition_in_admin_products($column, $post_id) {
+    if ('yourpropfirm_competition_id' === $column) {
+        $competition_id = get_post_meta($post_id, '_yourpropfirm_competition_id', true);
+        if ($competition_id) {
+            echo '<span id="yourpropfirm_competition_id-' . $post_id . '">' . esc_html($competition_id) . '</span>'; 
+        } else {
+            echo '—';
+        }
+    }
+}
+add_action('manage_product_posts_custom_column', 'yourpropfirm_display_competition_in_admin_products', 10, 2);
 
 function yourpropfirm_save_quick_edit_data($product_id) {
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
