@@ -15,9 +15,22 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
     $productsIdStr = strval($productsId);
     
     // Retrieve the per-product total from the order
-    $order_item = $order->get_item($product_woo_id);
-    $product_total = $order_item->get_total(); // Total after discount
-    $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
+    $order_item = null;
+    foreach ($order->get_items() as $item) {
+        if ($item->get_product_id() == $productsId) {
+            $order_item = $item;
+            break;
+        }
+    }
+
+    if ($order_item) {
+        $product_total = $order_item->get_total(); // Total after discount
+        $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
+    } else {
+        $product_total = 0;
+        $product_subtotal = 0;
+    }
+
     $product_fee_total = 0;
 
     // Calculate fees for the specific product if there are any
