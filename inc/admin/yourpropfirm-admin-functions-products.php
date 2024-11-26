@@ -75,7 +75,13 @@ function yourpropfirm_save_dynamic_fields($product_id) {
 }
 add_action('woocommerce_process_product_meta', 'yourpropfirm_save_dynamic_fields');
 
+// Add ProgramId on the column products list
 function yourpropfirm_add_program_id_column_to_admin_products($columns) {
+    $enable_challenge = get_option('yourpropfirm_connection_challenge_enabled');
+    if ($enable_challenge !== 'enable') {
+        return;
+    }
+    
     $new_columns = array();
 
     foreach ($columns as $key => $name) {
@@ -90,7 +96,12 @@ function yourpropfirm_add_program_id_column_to_admin_products($columns) {
 }
 add_filter('manage_edit-product_columns', 'yourpropfirm_add_program_id_column_to_admin_products', 20);
 
+// Display ProgramId on the column products list
 function yourpropfirm_display_program_id_in_admin_products($column, $post_id) {
+    $enable_challenge = get_option('yourpropfirm_connection_challenge_enabled');
+    if ($enable_challenge !== 'enable') {
+        return;
+    }
     if ('yourpropfirm_program_id' === $column) {
         $program_id = get_post_meta($post_id, '_yourpropfirm_program_id', true);
         if ($program_id) {
@@ -102,8 +113,13 @@ function yourpropfirm_display_program_id_in_admin_products($column, $post_id) {
 }
 add_action('manage_product_posts_custom_column', 'yourpropfirm_display_program_id_in_admin_products', 10, 2);
 
-
+// Add CompetitionId on the column products list
 function yourpropfirm_add_competition_id_column_to_admin_products($columns) {
+    $enable_competition = get_option('yourpropfirm_connection_competition_enabled');
+    if ($enable_competition !== 'enable') {
+        return;
+    }
+
     $new_columns = array();
 
     foreach ($columns as $key => $name) {
@@ -118,7 +134,13 @@ function yourpropfirm_add_competition_id_column_to_admin_products($columns) {
 }
 add_filter('manage_edit-product_columns', 'yourpropfirm_add_competition_id_column_to_admin_products', 20);
 
+// Display CompetitionId on the column products list
 function yourpropfirm_display_competition_in_admin_products($column, $post_id) {
+    $enable_competition = get_option('yourpropfirm_connection_competition_enabled');
+    if ($enable_competition !== 'enable') {
+        return;
+    }
+
     if ('yourpropfirm_competition_id' === $column) {
         $competition_id = get_post_meta($post_id, '_yourpropfirm_competition_id', true);
         if ($competition_id) {
