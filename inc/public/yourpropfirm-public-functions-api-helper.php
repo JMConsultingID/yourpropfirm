@@ -15,7 +15,7 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
     $productsIdStr = strval($productsId);
     
     // Retrieve the per-product total from the order
-    $order_item = $order->get_item($products_loop_id);
+    $order_item = $order->get_item($product_woo_id);
     $product_total = $order_item->get_total(); // Total after discount
     $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
     $product_fee_total = 0;
@@ -148,6 +148,22 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
     $user_phone = $order->get_billing_phone();
     $order_total_val = floatval($order_total);
 
+    // Retrieve the per-product total from the order
+    $order_item = $order->get_item($product_woo_id);
+    $product_total = $order_item->get_total(); // Total after discount
+    $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
+    $product_fee_total = 0;
+
+    // Calculate fees for the specific product if there are any
+    foreach ($order->get_fees() as $fee) {
+        if ($fee->get_product_id() == $product_woo_id) {
+            $product_fee_total += $fee->get_total();
+        }
+    }
+
+    // Combine the total for the specific product, including fees
+    $order_total_per_product = $product_total + $product_fee_total;
+
     // Prepare the main data array
     $data = array(
         'email' => $user_email,
@@ -159,7 +175,7 @@ function yourpropfirm_get_competition_api_data($order, $order_id, $product_woo_i
         'invoiceId' => $invoiceIdStr,
         'productId' => strval($productId),
         'currency' => $order_currency,
-        'income' => $order_total_val,
+        'income' => $order_total_per_product,
         'attributes' => array(  // Attributes like address, city, country, etc.
             'addressLine' => $user_address,
             'city' => $user_city,
