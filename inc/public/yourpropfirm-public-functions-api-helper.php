@@ -75,7 +75,7 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
     }
 
     // Construct the full endpoint URL for the API request
-    $endpoint_url_full = $endpoint_url . '/client/v1/users/' . urlencode($user_id) . '/accounts';
+    $endpoint_url_full = $endpoint_url . '/' . urlencode($user_id) . '/accounts';
     // Send API request using your custom function
     $response = yourpropfirm_send_wp_remote_post_request($endpoint_url_full, $api_key, $api_data_account, $delay);
     
