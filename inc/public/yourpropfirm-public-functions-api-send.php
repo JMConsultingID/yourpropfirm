@@ -123,6 +123,8 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $http_status = $response['http_status'];
                     $api_response = $response['api_response'];
                     $quantity_first_product = 1;
+
+                    $order_total_value = $api_data['income'];
                                     
                     $user_data = json_decode($response['api_response'], true);
                     $user_id = isset($user_data['id']) ? $user_data['id'] : null;
@@ -139,7 +141,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                     $combined_note_hit_logs .= "--End Log--\n";
                     $log_data['logger']->info($combined_note_hit_logs,  $log_data['context']);
 
-                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id, $competition_id, $products_loop_id, $mt_version_value,  $site_language_value, $order_currency, $order_total, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id, $competition_id, $products_loop_id, $mt_version_value,  $site_language_value, $order_currency, $order_total_value, $product_woo_id, $quantity_first_product, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 
                     // Loop through the quantity of the first product
                     if ($user_id && $quantity > 1) {
