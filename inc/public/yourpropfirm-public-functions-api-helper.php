@@ -25,20 +25,32 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
 
     if ($order_item) {
         $product_total = $order_item->get_total(); // Total after discount
-        $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
     } else {
         $product_total = 0;
-        $product_subtotal = 0;
     }
 
-    // Sum all fees (fees are general, not per product)
-    $product_fee_total = 0;
-    foreach ($order->get_fees() as $fee) {
-        $product_fee_total += $fee->get_total();
-    }
+    // Calculate Add-On Fees
+    $addons_fee_total = 0;
 
-    // Combine the total for the specific product, including fees
-    $order_total_per_product = $product_total + $product_fee_total;
+    // Get checkout type and add-ons data
+    $checkout_type = get_option('ypf_addons_checkout_type', '1');
+    if ($checkout_type == '1') {
+        // Radio button: Single selected add-on
+        $selected_addon = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : null;
+
+        if ($selected_addon) {
+            $addon_percentage = get_addon_percentage($selected_addon); // Function to retrieve percentage by add-on ID
+            $addons_fee_total = ($product_total * $addon_percentage) / 100;
+        }
+    } else {
+        // Checkbox: Multiple selected add-ons
+        $selected_addons = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : [];
+
+        foreach ($selected_addons as $addon_id) {
+            $addon_percentage = get_addon_percentage($addon_id); // Function to retrieve percentage by add-on ID
+            $addons_fee_total += ($product_total * $addon_percentage) / 100;
+        }
+    }
 
     $api_data_account = array(
         'mtVersion' => $mt_version,
@@ -110,20 +122,32 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
 
     if ($order_item) {
         $product_total = $order_item->get_total(); // Total after discount
-        $product_subtotal = $order_item->get_subtotal(); // Subtotal before discount
     } else {
         $product_total = 0;
-        $product_subtotal = 0;
     }
 
-    // Sum all fees (fees are general, not per product)
-    $product_fee_total = 0;
-    foreach ($order->get_fees() as $fee) {
-        $product_fee_total += $fee->get_total();
-    }
+    // Calculate Add-On Fees
+    $addons_fee_total = 0;
 
-    // Combine the total for the specific product, including fees
-    $order_total_per_product = $product_total + $product_fee_total;
+    // Get checkout type and add-ons data
+    $checkout_type = get_option('ypf_addons_checkout_type', '1');
+    if ($checkout_type == '1') {
+        // Radio button: Single selected add-on
+        $selected_addon = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : null;
+
+        if ($selected_addon) {
+            $addon_percentage = get_addon_percentage($selected_addon); // Function to retrieve percentage by add-on ID
+            $addons_fee_total = ($product_total * $addon_percentage) / 100;
+        }
+    } else {
+        // Checkbox: Multiple selected add-ons
+        $selected_addons = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : [];
+
+        foreach ($selected_addons as $addon_id) {
+            $addon_percentage = get_addon_percentage($addon_id); // Function to retrieve percentage by add-on ID
+            $addons_fee_total += ($product_total * $addon_percentage) / 100;
+        }
+    }
 
     $data = array(
         'email' => $user_email,
