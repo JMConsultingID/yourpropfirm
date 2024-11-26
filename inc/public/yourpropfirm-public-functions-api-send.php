@@ -152,7 +152,7 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                             }
                         }
                     }                    
-                } elseif (!empty($program_id) && $first_product) {
+                } elseif (!empty($program_id) && $first_product && $user_id) {
                     // For subsequent products, loop through each quantity
                     for ($i = 0; $i < $quantity; $i++) {
                         $quantity_other_product_qty = $i+1;
