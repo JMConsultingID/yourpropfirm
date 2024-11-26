@@ -28,6 +28,9 @@ if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 }
 
+global $wpdb;
+define('YPF_ADDONS_TABLE', $wpdb->prefix . 'ypf_addons');
+
 // Enqueue external JS in the WooCommerce product admin page from plugin directory
 function yourpropfirm_enqueue_admin_script($hook) {
     global $post;

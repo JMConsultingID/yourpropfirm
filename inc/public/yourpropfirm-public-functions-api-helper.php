@@ -8,10 +8,9 @@
  * @package yourpropfirm
  */
 // Helper function to retrieve addon details by ID
-function get_addon_by_id($addon_id) {
+function yourpropfirm_yourpropfirm_get_addon_by_id($addon_id) {
     global $wpdb;
-    // Replace YPF_ADDONS_TABLE_NAME with your actual table name
-    return $wpdb->get_row($wpdb->prepare("SELECT addon_name, value_percentage FROM " . YPF_ADDONS_TABLE_NAME . " WHERE id = %d", $addon_id));
+    return $wpdb->get_row($wpdb->prepare("SELECT addon_name, value_percentage FROM " . YPF_ADDONS_TABLE . " WHERE id = %d", $addon_id));
 }
 
 // Function to handle sending account creation request
@@ -46,7 +45,7 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
         $selected_addon = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : null;
 
         if ($selected_addon) {
-            $addon = get_addon_by_id($selected_addon); // Use the helper function
+            $addon = yourpropfirm_get_addon_by_id($selected_addon); // Use the helper function
             if ($addon) {
                 $addons_fee_total = ($product_total * floatval($addon->value_percentage)) / 100;
             }
@@ -56,7 +55,7 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
         $selected_addons = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : [];
 
         foreach ($selected_addons as $addon_id) {
-            $addon = get_addon_by_id($addon_id); // Use the helper function
+            $addon = yourpropfirm_get_addon_by_id($addon_id); // Use the helper function
             if ($addon) {
                 $addons_fee_total += ($product_total * floatval($addon->value_percentage)) / 100;
             }
@@ -150,7 +149,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         $selected_addon = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : null;
 
         if ($selected_addon) {
-            $addon = get_addon_by_id($selected_addon); // Use the helper function
+            $addon = yourpropfirm_get_addon_by_id($selected_addon); // Use the helper function
             if ($addon) {
                 $addons_fee_total = ($product_total * floatval($addon->value_percentage)) / 100;
             }
@@ -160,7 +159,7 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         $selected_addons = isset($_POST['ypf_addons']) ? $_POST['ypf_addons'] : [];
 
         foreach ($selected_addons as $addon_id) {
-            $addon = get_addon_by_id($addon_id); // Use the helper function
+            $addon = yourpropfirm_get_addon_by_id($addon_id); // Use the helper function
             if ($addon) {
                 $addons_fee_total += ($product_total * floatval($addon->value_percentage)) / 100;
             }
