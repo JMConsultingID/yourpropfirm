@@ -146,16 +146,16 @@ function yourpropfirm_send_api_on_order_status_change($order_id, $old_status, $n
                         for ($i = 1; $i < $quantity; $i++) {
                             $quantity_first_product_qty = $i+1;
                             if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
-                            yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $order_currency, $products_loop_id, $product_woo_id, $quantity_first_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                            yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $competition_id, $yourpropfirm_selection_type, $mt_version_value, $request_delay, $order, $order_id, $order_currency, $products_loop_id, $site_language_value, $product_woo_id, $quantity_other_product_qty, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                             }
                         }
                     }                    
-                } elseif (!empty($program_id) && $first_product && $user_id) {
+                } elseif (!empty($program_id) && $first_product) {
                     // For subsequent products, loop through each quantity
                     for ($i = 0; $i < $quantity; $i++) {
                         $quantity_other_product_qty = $i+1;
                         if ($yourpropfirm_selection_type === 'challenge' && $ypf_challenge_completed === 'enable') {
-                        yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version_value, $request_delay, $order, $order_id, $order_currency, $products_loop_id, $product_woo_id, $quantity_other_product_qty, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+                        yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $competition_id, $yourpropfirm_selection_type, $mt_version_value, $request_delay, $order, $order_id, $order_currency, $products_loop_id, $site_language_value, $product_woo_id, $quantity_other_product_qty, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
                         }
                     }
                 }

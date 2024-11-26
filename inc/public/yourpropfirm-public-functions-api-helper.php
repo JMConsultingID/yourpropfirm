@@ -8,7 +8,7 @@
  * @package yourpropfirm
  */
 // Function to handle sending account creation request
-function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $mt_version, $delay, $order, $order_id, $order_currency, $products_loop_id, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
+function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $api_key, $program_id, $competition_id, $yourpropfirm_selection_type, $mt_version, $delay, $order, $order_id, $order_currency, $products_loop_id, $site_language_value, $product_woo_id, $quantity, $profitSplit, $withdrawActiveDays, $withdrawTradingDays) {
     $invoicesId = $order_id;
     $productsId = $product_woo_id;
     $invoicesIdStr = strval($invoicesId);
@@ -83,7 +83,7 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
     $api_response = $response['api_response'];
 
     // Handle API response errors using your custom error handling function
-    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $program_id, $products_loop_id, $mt_version, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
+    yourpropfirm_handle_api_response_error($order, $http_status, $api_response, $order_id, $yourpropfirm_selection_type, $program_id, $competition_id, $products_loop_id, $mt_version, $site_language_value, $order_currency, $order_total_per_product, $product_woo_id, $quantity, $user_id, $profitSplit, $withdrawActiveDays, $withdrawTradingDays);
 }
 
 
