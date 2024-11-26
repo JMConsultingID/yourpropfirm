@@ -52,6 +52,9 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
         }
     }
 
+    // Combine the total for the specific product, including add-on fees
+    $order_total_per_product = $product_total + $addons_fee_total;
+
     $api_data_account = array(
         'mtVersion' => $mt_version,
         'programId' => $program_id,
@@ -148,6 +151,9 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
             $addons_fee_total += ($product_total * $addon_percentage) / 100;
         }
     }
+
+    // Combine the total for the specific product, including add-on fees
+    $order_total_per_product = $product_total + $addons_fee_total;
 
     $data = array(
         'email' => $user_email,
