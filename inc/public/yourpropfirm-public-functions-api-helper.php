@@ -31,13 +31,10 @@ function yourpropfirm_challenge_send_account_request($endpoint_url, $user_id, $a
         $product_subtotal = 0;
     }
 
+    // Sum all fees (fees are general, not per product)
     $product_fee_total = 0;
-
-    // Calculate fees for the specific product if there are any
     foreach ($order->get_fees() as $fee) {
-        if ($fee->get_product_id() == $product_woo_id) {
-            $product_fee_total += $fee->get_total();
-        }
+        $product_fee_total += $fee->get_total();
     }
 
     // Combine the total for the specific product, including fees
@@ -119,13 +116,10 @@ function yourpropfirm_get_challenge_api_data($order, $order_id, $product_woo_id,
         $product_subtotal = 0;
     }
 
+    // Sum all fees (fees are general, not per product)
     $product_fee_total = 0;
-
-    // Calculate fees for the specific product if there are any
     foreach ($order->get_fees() as $fee) {
-        if ($fee->get_product_id() == $product_woo_id) {
-            $product_fee_total += $fee->get_total();
-        }
+        $product_fee_total += $fee->get_total();
     }
 
     // Combine the total for the specific product, including fees
