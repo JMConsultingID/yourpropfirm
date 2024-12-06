@@ -9,7 +9,7 @@
  * Plugin Name:       YourPropfirm Connection Dashboard
  * Plugin URI:        https://yourpropfirm.com
  * Description:       This Plugin to Create User and Account to Dashboard YourPropfirm
- * Version:           1.2.1.2
+ * Version:           1.2.1.3
  * Author:            YourPropfirm Team
  * Author URI:        https://yourpropfirm.com
  * License:           GPL-2.0+
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-define( 'YOURPROPFIRM_VERSION', '1.2.1.2' );
+define( 'YOURPROPFIRM_VERSION', '1.2.1.3' );
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
