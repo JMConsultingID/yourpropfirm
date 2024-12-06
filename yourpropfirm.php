@@ -9,7 +9,7 @@
  * Plugin Name:       YourPropfirm Connection Dashboard
  * Plugin URI:        https://yourpropfirm.com
  * Description:       This Plugin to Create User and Account to Dashboard YourPropfirm
- * Version:           1.2.1.0
+ * Version:           1.2.1.2
  * Author:            YourPropfirm Team
  * Author URI:        https://yourpropfirm.com
  * License:           GPL-2.0+
@@ -22,29 +22,40 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit; // Exit if accessed directly.
 }
 
-define( 'YOURPROPFIRM_VERSION', '1.2.1.0' );
+define( 'YOURPROPFIRM_VERSION', '1.2.1.2' );
 
 if (!function_exists('is_plugin_active')) {
     include_once(ABSPATH . '/wp-admin/includes/plugin.php');
 }
 
+global $wpdb;
+define('YPF_ADDONS_TABLE', $wpdb->prefix . 'ypf_addons');
+
 // Enqueue external JS in the WooCommerce product admin page from plugin directory
 function yourpropfirm_enqueue_admin_script($hook) {
     global $post;
-
-    // Check if we are on the product edit page
     if ('post.php' === $hook && 'product' === $post->post_type) {
-        // Use plugin_dir_url to ensure correct path
         wp_enqueue_script(
-            'yourpropfirm-admin-js', // Unique handle for the script
-            plugin_dir_url(__FILE__) . 'assets/js/yourpropfirm-admin.js', // Corrected path to your JS file
-            array('jquery'), // Dependencies (in this case, jQuery)
-            YOURPROPFIRM_VERSION, // Version of the script
-            true // Load in footer
+            'yourpropfirm-admin-js',
+            plugin_dir_url(__FILE__) . 'assets/js/yourpropfirm-admin.js',
+            array('jquery'), 
+            YOURPROPFIRM_VERSION,
+            true 
         );
     }
 }
 add_action('admin_enqueue_scripts', 'yourpropfirm_enqueue_admin_script');
+
+function yourpropfirm_enqueue_public_styles() {
+    wp_enqueue_style(
+        'yourpropfirm-public-css', 
+        plugin_dir_url(__FILE__) . 'assets/css/yourpropfirm-public.css',
+        array(),
+        YOURPROPFIRM_VERSION // Plugin version
+    );
+}
+add_action('wp_enqueue_scripts', 'yourpropfirm_enqueue_public_styles');
+
 
 
 require plugin_dir_path( __FILE__ ) . 'inc/yourpropfirm-functions.php';

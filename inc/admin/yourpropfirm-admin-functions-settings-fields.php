@@ -23,6 +23,7 @@ function yourpropfirm_connection_general_settings_fields() {
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_trading_platforms',  array('sanitize_callback' => 'yourpropfirm_connection_sanitize_checkbox_array', 'default' => array()));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_default_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'MT4'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_mt_version_field', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
+    register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_mt_version_type', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'select'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_request_method', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'wp_remote_post'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_request_delay', array('sanitize_callback' => 'sanitize_text_field', 'default' => '2'));
     register_setting('yourpropfirm_connection_general_settings', 'yourpropfirm_connection_enable_response_header', array('sanitize_callback' => 'sanitize_text_field', 'default' => '1'));
@@ -39,6 +40,7 @@ function yourpropfirm_connection_general_settings_fields() {
     add_settings_field('yourpropfirm_connection_trading_platforms', 'Enable Trading Platforms', 'yourpropfirm_connection_trading_platforms_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_default_mt_version_field', 'Select Default MT Version Field', 'yourpropfirm_connection_default_mt_version_field_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');  
     add_settings_field('yourpropfirm_connection_mt_version_field', 'Enable MT Version Field (On Checkout Page)', 'yourpropfirm_connection_mt_version_field_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
+    add_settings_field('yourpropfirm_connection_mt_version_type', 'MT Version Field Type (On Checkout Page)', 'yourpropfirm_connection_mt_version_type_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_method', 'Request Method', 'yourpropfirm_connection_request_method_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_request_delay', 'Delay Request (for multiple product)', 'yourpropfirm_connection_request_delay_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
     add_settings_field('yourpropfirm_connection_enable_response_header', 'Save Log Response', 'yourpropfirm_connection_enable_response_header_callback', 'yourpropfirm_connection_general_settings', 'yourpropfirm_connection_general');
@@ -131,6 +133,15 @@ function yourpropfirm_connection_mt_version_field_callback() {
     echo '<option value="disable"' . selected($option, 'disable', false) . '>Disable</option>';
     echo '</select>';
 }
+
+function yourpropfirm_connection_mt_version_type_callback(){
+    $option = get_option('yourpropfirm_connection_mt_version_type');
+    echo '<select name="yourpropfirm_connection_mt_version_type">';
+    echo '<option value="select"' . selected($option, 'select', false) . '>Select Option</option>';
+    echo '<option value="radio"' . selected($option, 'radio', false) . '>Radio Button</option>';
+    echo '</select>';
+}
+
 
 // Render request method field
 function yourpropfirm_connection_request_method_callback() {

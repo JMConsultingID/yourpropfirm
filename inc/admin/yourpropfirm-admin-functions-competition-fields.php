@@ -15,7 +15,7 @@ add_action('admin_init', 'yourpropfirm_connection_competition_settings_fields');
 function yourpropfirm_connection_competition_settings_fields() { 
     register_setting('yourpropfirm_connection_competition_settings', 'yourpropfirm_connection_competition_enabled', array('sanitize_callback' => 'sanitize_text_field', 'default' => 'disable'));
     add_settings_section('yourpropfirm_connection_competition_settings', 'General Settings', 'yourpropfirm_connection_competition_section_callback', 'yourpropfirm_connection_competition_settings');
-    add_settings_field('yourpropfirm_connection_competition_enabled', 'Enable Challenge', 'yourpropfirm_connection_competition_enabled_callback', 'yourpropfirm_connection_competition_settings', 'yourpropfirm_connection_competition_settings');  
+    add_settings_field('yourpropfirm_connection_competition_enabled', 'Enable Competition', 'yourpropfirm_connection_competition_enabled_callback', 'yourpropfirm_connection_competition_settings', 'yourpropfirm_connection_competition_settings');  
 }
 
 // Render section callback
