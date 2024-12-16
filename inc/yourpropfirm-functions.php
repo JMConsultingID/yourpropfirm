@@ -20,6 +20,7 @@ require dirname(__FILE__) . '/public/yourpropfirm-public-functions.php';
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions-api-helper.php';
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions-api-send.php';
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions-checkout.php';
+require dirname(__FILE__) . '/public/yourpropfirm-public-functions-checkout-mode.php';
 require dirname(__FILE__) . '/public/yourpropfirm-public-functions-order.php';
 
 // Include helper functions
