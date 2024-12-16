@@ -63,7 +63,7 @@ function yourpropfirm_function_redirect_to_checkout() {
 /**
  * Check for multiple products in the cart and handle refresh.
  */
-function yourpropfirm_function_customize_order_button_text {
+function yourpropfirm_function_customize_order_button_text() {
     if (WC()->cart->get_cart_contents_count() > 1) {
         // Display error notice.
         wc_print_notice(__('Only 1 product can be checked out at a time. Please refresh the cart to keep only the last product.', 'yourpropfirm-checkout'), 'error');
